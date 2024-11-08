@@ -75,6 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
     li.appendChild(taskText);
     li.appendChild(checkbox);
     li.appendChild(removeBtn);
+  
+    // Apply styles based on completion state
+    if (task.completed) {
+      li.classList.add("completed"); // Add 'completed' class if task is completed
+    }
+  
     ul.appendChild(li);
   }
   
@@ -90,10 +96,15 @@ document.addEventListener("DOMContentLoaded", () => {
   
     const taskText = listItem.querySelector(".task-text");
     taskText.style.color = task.completed ? "#8bde64" : "#f0f0f0"; // Vibrant green when checked, white when unchecked
-  
-    // Apply line-through to task text only, not the entire li
     taskText.style.textDecoration = task.completed ? "line-through" : "none"; // Line-through for completed tasks
     taskText.style.textDecorationColor = task.completed ? "#8bde64" : "transparent"; // Line-through color for completed tasks
+  
+    // Apply 'completed' class when checked
+    if (task.completed) {
+      listItem.classList.add("completed");
+    } else {
+      listItem.classList.remove("completed");
+    }
   }
   
   function updateTask(type, task) {
@@ -145,8 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const today = new Date().toDateString();
     if (lastDailyReset !== today) {
       localStorage.setItem("lastDailyReset", today);
-      localStorage.setItem("daily", JSON.stringify([]));
-      document.getElementById("daily-tasks-list").innerHTML = "";
+      resetDailyTasks();
     }
   }
   
@@ -157,9 +167,30 @@ document.addEventListener("DOMContentLoaded", () => {
   
     if (lastWeeklyReset !== firstDayOfWeek) {
       localStorage.setItem("lastWeeklyReset", firstDayOfWeek);
-      localStorage.setItem("weekly", JSON.stringify([]));
-      document.getElementById("weekly-tasks-list").innerHTML = "";
+      resetWeeklyTasks();
     }
+  }
+  
+  function resetDailyTasks() {
+    let dailyTasks = JSON.parse(localStorage.getItem("daily")) || [];
+    dailyTasks = dailyTasks.map(task => {
+      task.completed = false;  // Uncheck all daily tasks
+      return task;
+    });
+    localStorage.setItem("daily", JSON.stringify(dailyTasks));
+    document.getElementById("daily-tasks-list").innerHTML = "";
+    loadTasks();
+  }
+  
+  function resetWeeklyTasks() {
+    let weeklyTasks = JSON.parse(localStorage.getItem("weekly")) || [];
+    weeklyTasks = weeklyTasks.map(task => {
+      task.completed = false;  // Uncheck all weekly tasks
+      return task;
+    });
+    localStorage.setItem("weekly", JSON.stringify(weeklyTasks));
+    document.getElementById("weekly-tasks-list").innerHTML = "";
+    loadTasks();
   }
   
   

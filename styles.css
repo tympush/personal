@@ -8,59 +8,59 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
-}
+  }
   
-h1 {
+  h1 {
     margin-top: 20px;
     color: #ffffff;
-}
+  }
   
-.container {
+  .container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
     max-width: 1200px;
     justify-content: center;
-}
+  }
   
-.task-box {
+  .task-box {
     background-color: #2c2c2c;
     border: 1px solid #444;
     border-radius: 8px;
     padding: 20px;
     width: 280px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
+  }
   
-.task-box h2 {
+  .task-box h2 {
     font-size: 18px;
     margin: 0;
     color: #f0f0f0;
-}
+  }
   
-.task-header {
+  .task-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
-}
+  }
   
-.task-header select {
+  .task-header select {
     font-size: 14px;
     padding: 4px;
     background-color: #444;
     color: #f0f0f0;
     border: none;
     border-radius: 4px;
-}
+  }
   
-.task-box ul {
+  .task-box ul {
     list-style-type: none;
     padding: 0;
-}
+  }
   
-.task-box li {
+  .task-box li {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -68,25 +68,24 @@ h1 {
     background-color: #3a3a3a;
     border-radius: 6px;
     margin-bottom: 8px;
-    color: #f0f0f0; /* Default task text color */
-}
+    color: #d3d3d3;
+  }
   
-.task-box li.checked .task-text {
-    color: #a9f0a4; /* Green text for completed tasks */
-}
+  .task-box li.checked .task-text {
+    color: #8bde64; /* Vibrant green text for completed tasks */
+  }
   
-.task-box li .task-text {
+  .task-box li .task-text {
     flex-grow: 1;
-    color: #f0f0f0; /* Ensure default task text color is white */
-}
+  }
   
-.task-box li input[type="checkbox"] {
+  .task-box li input[type="checkbox"] {
     margin-left: 10px;
     transform: scale(1.5);
     accent-color: #b67df2;
-}
+  }
   
-.remove-btn {
+  .remove-btn {
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -94,9 +93,9 @@ h1 {
     cursor: pointer;
     padding: 2px 6px;
     margin-left: 5px;
-}
+  }
   
-button {
+  button {
     background-color: #b67df2;
     color: #fff;
     border: none;
@@ -104,8 +103,22 @@ button {
     font-size: 14px;
     cursor: pointer;
     border-radius: 4px;
-}
+  }
   
-button:hover {
+  button:hover {
     background-color: #d0a8f5;
-}
+  }
+  
+  /* Styling for completed tasks */
+  .task-box li.completed .task-text {
+    color: #8bde64; /* Vibrant green for completed tasks */
+    text-decoration: line-through; /* Striking out the text */
+    text-decoration-color: #8bde64; /* Line-through color */
+  }
+  
+  /* Ensuring the checkbox is unchecked for daily and weekly tasks on reset */
+  .task-box li input[type="checkbox"]:not(:checked) {
+    background-color: #444;
+  }
+  
+  
