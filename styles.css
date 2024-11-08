@@ -122,18 +122,4 @@ body {
   .task-box li input[type="checkbox"]:not(:checked) {
     background-color: #444;
   }
-
-  /* For completed tasks */
-.task-box li.checked .task-text {
-    color: #8bde64; /* Vibrant green */
-    text-decoration: line-through;
-    text-decoration-color: #8bde64; /* Same green line-through */
-  }
-  
-  /* Ensure remove button is never crossed out or colored */
-  .task-box li.checked .remove-btn {
-    text-decoration: none; /* No line-through */
-    color: inherit; /* Keep the remove button color unchanged */
-  }
-  
   
