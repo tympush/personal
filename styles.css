@@ -106,7 +106,7 @@ body {
   }
   
   /* Styling for completed tasks */
-.completed .task-text{
+  .checked .task-text{
     color: #8bde64; /* Vibrant green for completed tasks */
     text-decoration: line-through; /* Striking out the text */
     text-decoration-color: #8bde64; /* Line-through color */
