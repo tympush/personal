@@ -88,8 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
       updateTask(type, task);
     }
   
-    listItem.style.textDecoration = task.completed ? "line-through" : "none";
-    listItem.style.color = task.completed ? "green" : "black";
+    const taskText = listItem.querySelector(".task-text");
+    taskText.style.color = task.completed ? "#8bde64" : "#f0f0f0"; // Vibrant green when checked, white when unchecked
+  
+    // Apply line-through to task text only, not the entire li
+    taskText.style.textDecoration = task.completed ? "line-through" : "none"; // Line-through for completed tasks
+    taskText.style.textDecorationColor = task.completed ? "#8bde64" : "transparent"; // Line-through color for completed tasks
   }
   
   function updateTask(type, task) {
@@ -157,4 +161,5 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("weekly-tasks-list").innerHTML = "";
     }
   }
+  
   
