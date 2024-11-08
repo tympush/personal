@@ -138,7 +138,12 @@ button:hover {
 }
 
 /* Task item fade-in and fade-out transitions */
+/* Task item fade-in and fade-out transitions */
 .task-box li {
-    transition: opacity 0.3s ease; /* Smooth fade transition */
+    transition: opacity 0.3s ease; /* Smooth fade transition for normal tasks */
 }
 
+/* Fade-out for one-time tasks with a 1.5-second duration */
+.one-time-task.fade-out {
+    transition: opacity 1.5s ease; /* 1.5 seconds for fade-out */
+}

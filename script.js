@@ -66,6 +66,12 @@ function displayTask(type, task) {
     if (type === "specific" && task.day !== selectedDay) return; // Filter tasks for the selected day
 
     const li = document.createElement("li");
+    
+    // Add a specific class for one-time tasks for styling purposes
+    if (type === "oneTime") {
+        li.classList.add("one-time-task");
+    }
+
     if (task.completed) {
         li.classList.add("checked"); // Add the checked class for completed tasks
     }
@@ -100,10 +106,16 @@ function displayTask(type, task) {
 function toggleTask(type, task, listItem) {
     task.completed = !task.completed;
 
-    // If it's a one-time task and it's completed, remove it
+    // If it's a one-time task and it's completed, apply fade-out effect and remove
     if (type === "oneTime" && task.completed) {
-        listItem.remove();
-        deleteTask(type, task);
+        // Apply fade-out effect by adding the class
+        listItem.classList.add("fade-out");
+
+        // After the 1.5-second fade-out transition ends, remove the task from the DOM and localStorage
+        setTimeout(() => {
+            listItem.remove(); // Remove from DOM
+            deleteTask(type, task); // Remove from localStorage
+        }, 1500); // 1.5-second fade-out duration
     } else {
         updateTask(type, task);
     }
@@ -111,14 +123,14 @@ function toggleTask(type, task, listItem) {
     // Update the styling of the task
     if (task.completed) {
         listItem.classList.add("checked");  // Add "checked" class for completed task
-
         listItem.style.color = "#8bde64";  // Set the green color for completed task
     } else {
         listItem.classList.remove("checked");  // Remove "checked" class for uncompleted task
-
         listItem.style.color = "#d3d3d3";  // Set the original color for uncompleted task
     }
 }
+
+
 
 function updateTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
