@@ -104,6 +104,10 @@ body {
   button:hover {
     background-color: #d0a8f5;
   }
+
+  .task-text {
+    transition: color 0.3s ease, text-decoration-color 0.3s ease, text-decoration 0.3s ease;
+}
   
   /* Styling for completed tasks */
   .checked .task-text{
@@ -118,3 +122,24 @@ body {
   }
   
   
+
+/* Initially set the opacity of the list items to 0 */
+.task-box li {
+    opacity: 0;
+    transition: opacity 0.3s ease; /* Smooth fade transition */
+}
+
+/* When the task fades in, apply opacity 1 */
+.task-box li.fade-in {
+    opacity: 1;
+}
+
+/* Fade-out effect for removing tasks */
+.task-box li.fade-out {
+    opacity: 0;
+}
+
+/* Ensure the transition for fade-out happens */
+.task-box li {
+    transition: opacity 0.3s ease; /* Smooth fade transition for both fade-in and fade-out */
+}

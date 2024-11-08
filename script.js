@@ -68,8 +68,6 @@ function displayTask(type, task) {
     const li = document.createElement("li");
     if (task.completed) {
         li.classList.add("checked"); // Add the checked class for completed tasks
-
-        li.style.color = "#8bde64"; // Green color for completed tasks
     }
 
     const taskText = document.createElement("span");
@@ -89,7 +87,14 @@ function displayTask(type, task) {
     li.appendChild(taskText);
     li.appendChild(checkbox);
     li.appendChild(removeBtn);
+
+    // Append the task item (it will start with opacity 0)
     ul.appendChild(li);
+
+    // Trigger fade-in by adding the .fade-in class after a slight delay
+    setTimeout(() => {
+        li.classList.add("fade-in");
+    }, 10); // Small timeout to ensure the element is rendered before starting the fade-in
 }
 
 function toggleTask(type, task, listItem) {
@@ -127,8 +132,14 @@ function updateTask(type, task) {
 }
 
 function removeTask(type, task, listItem) {
-    listItem.remove();
-    deleteTask(type, task);
+    // Apply fade-out effect by adding the class
+    listItem.classList.add("fade-out");
+
+    // After the fade-out transition ends, remove the task from the DOM and localStorage
+    setTimeout(() => {
+        listItem.remove(); // Remove from DOM
+        deleteTask(type, task); // Remove from localStorage
+    }, 300); // Match this duration with the CSS transition time
 }
 
 function deleteTask(type, task) {
