@@ -29,7 +29,7 @@ h1 {
     border: 1px solid #444;
     border-radius: 8px;
     padding: 20px;
-    width: 280px;
+    width: 320px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -58,7 +58,7 @@ h1 {
 .task-box ul {
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 10;
 }
 
 /* Task list item */
@@ -69,11 +69,11 @@ h1 {
     padding: 10px;
     background-color: #3a3a3a;
     border-radius: 6px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: #d3d3d3;
     opacity: 0; /* Initially set opacity to 0 for fade-in effect */
     transition: opacity 0.3s ease; /* Smooth fade transition */
-    width: 100%; /* Ensure list items take the full width */
+    width: 280; /* Ensure list items take the full width */
 }
 
 .task-box li.fade-in {
@@ -86,12 +86,12 @@ h1 {
 
 /* Task text styling with transition for completed tasks */
 .task-text {
-    margin-right: 10px; /* Space between text and checkbox/remove button */
+    margin-right: 0px; /* Space between text and checkbox/remove button */
     word-wrap: break-word; /* Ensure long words break properly */
     white-space: normal; /* Allow text to wrap */
     flex-grow: 1; /* Allow text to take up remaining space */
     transition: color 0.3s ease, text-decoration-color 0.3s ease, text-decoration 0.3s ease;
-    max-width: calc(100% - 40px); /* Ensure text doesn't overflow (space for buttons) */
+    max-width: calc(100% - 50px); /* Ensure text doesn't overflow (space for buttons) */
 }
 
 /* Styling for completed tasks */
