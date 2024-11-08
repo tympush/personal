@@ -105,8 +105,12 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function updateTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
-    const index = tasks.findIndex(t => t.text === task.text);
-    tasks[index] = task;
+    const index = tasks.findIndex(t => t.text === task.text && t.day === task.day); // Match day too
+    if (index !== -1) {
+      tasks[index] = task; // Update the task
+    } else {
+      tasks.push(task); // In case it's a new task
+    }
     localStorage.setItem(type, JSON.stringify(tasks));
   }
   
@@ -117,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function deleteTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
-    tasks = tasks.filter(t => t.text !== task.text);
+    tasks = tasks.filter(t => t.text !== task.text || (task.day && t.day !== task.day)); // Remove based on day as well
     localStorage.setItem(type, JSON.stringify(tasks));
   }
   
@@ -166,5 +170,22 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function updateSpecificDayHeading(day) {
     document.getElementById("specific-day-heading").textContent = `Tasks for ${day}`;
+  }
+  
+  // Updates tasks and heading when a new day is selected in the dropdown
+  function updateSpecificDayTasks() {
+    const selectedDay = document.getElementById("day-selector").value;
+    updateSpecificDayHeading(selectedDay);
+  
+    // Clear the current specific day tasks list
+    document.getElementById("specific-day-tasks-list").innerHTML = "";
+  
+    // Reload specific day tasks based on the new selection
+    const specificTasks = JSON.parse(localStorage.getItem("specific")) || [];
+    specificTasks.forEach(task => {
+      if (task.day === selectedDay) {
+        displayTask("specific", task);
+      }
+    });
   }
   
