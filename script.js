@@ -1,163 +1,160 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Load tasks from localStorage on page load
+// Initialization and loading tasks from local storage
+document.addEventListener("DOMContentLoaded", () => {
     loadTasks();
-
-    // Event listeners for adding tasks
-    document.getElementById('add-daily').addEventListener('click', () => addTask('daily'));
-    document.getElementById('add-weekly').addEventListener('click', () => addTask('weekly'));
-    document.getElementById('add-one-time').addEventListener('click', () => addTask('one-time'));
-    document.getElementById('add-reminder').addEventListener('click', () => addTask('reminders'));
-    document.getElementById('add-specific-day').addEventListener('click', () => addSpecificDayTask());
-});
-
-// Function to load tasks from localStorage
-function loadTasks() {
-    clearTasks();
-    loadTaskList('daily');
-    loadTaskList('weekly');
-    loadTaskList('one-time');
-    loadTaskList('reminders');
-    loadSpecificDayTasks();
-}
-
-// Function to load a specific list of tasks
-function loadTaskList(taskType) {
-    const tasks = JSON.parse(localStorage.getItem(taskType)) || [];
-    const ul = document.getElementById(`${taskType}-list`);
-
-    tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.classList.add(task.completed ? 'checked' : '');
-        li.dataset.id = task.id;
-
-        const taskText = document.createElement('span');
-        taskText.classList.add('task-text');
-        taskText.textContent = task.text;
-        li.appendChild(taskText);
-
-        // Create the checkbox
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.checked = task.completed;
-        checkbox.addEventListener('change', () => toggleTaskCompletion(li, taskType, task.id));
-        li.appendChild(checkbox);
-
-        // Create the remove button
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        removeButton.classList.add('remove-btn');
-        removeButton.addEventListener('click', () => removeTask(li, taskType, task.id));
-        li.appendChild(removeButton);
-
-        ul.appendChild(li);
-    });
-}
-
-// Function to load tasks for a specific day (e.g., Tuesday Tasks)
-function loadSpecificDayTasks() {
-    const currentDay = new Date().toLocaleString('en-us', { weekday: 'long' }).toLowerCase();
-    const specificDayTasks = JSON.parse(localStorage.getItem(currentDay)) || [];
-    const ul = document.getElementById('specific-day-list');
-    specificDayTasks.forEach(task => {
-        const li = document.createElement('li');
-        li.classList.add(task.completed ? 'checked' : '');
-        li.dataset.id = task.id;
-
-        const taskText = document.createElement('span');
-        taskText.classList.add('task-text');
-        taskText.textContent = task.text;
-        li.appendChild(taskText);
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.checked = task.completed;
-        checkbox.addEventListener('change', () => toggleTaskCompletion(li, currentDay, task.id));
-        li.appendChild(checkbox);
-
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        removeButton.classList.add('remove-btn');
-        removeButton.addEventListener('click', () => removeTask(li, currentDay, task.id));
-        li.appendChild(removeButton);
-
-        ul.appendChild(li);
-    });
-}
-
-// Add a task (Daily, Weekly, One-Time, Reminders)
-function addTask(taskType) {
-    const input = document.getElementById(`${taskType}-input`);
-    const taskText = input.value.trim();
-
-    if (taskText === '') {
-        alert('Please enter a task.');
-        return;
+    selectTodayInDropdown();
+    updateSpecificDayTasks();
+    checkDailyReset();
+    checkWeeklyReset();
+  });
+  
+  // Select today's day in the dropdown and update heading
+  function selectTodayInDropdown() {
+    const today = getToday();
+    document.getElementById("day-selector").value = today;
+    updateSpecificDayHeading(today);
+  }
+  
+  function addTask(type) {
+    const taskText = prompt("Enter a task:");
+    if (!taskText) return;
+  
+    let task = { text: taskText, completed: false };
+  
+    if (type === "specific") {
+      const selectedDay = document.getElementById("day-selector").value;
+      task.day = selectedDay;
     }
-
-    const taskId = Date.now();
-    const task = {
-        id: taskId,
-        text: taskText,
-        completed: false
-    };
-
-    const tasks = JSON.parse(localStorage.getItem(taskType)) || [];
+  
+    saveTask(type, task);
+    displayTask(type, task);
+  }
+  
+  function saveTask(type, task) {
+    let tasks = JSON.parse(localStorage.getItem(type)) || [];
     tasks.push(task);
-    localStorage.setItem(taskType, JSON.stringify(tasks));
-
-    input.value = ''; // Clear the input field
-
-    loadTasks(); // Reload tasks to reflect the new one
-}
-
-// Add a specific day task (Tasks for a specific day of the week)
-function addSpecificDayTask() {
-    const input = document.getElementById('specific-day-input');
-    const taskText = input.value.trim();
-    const selectedDay = document.getElementById('specific-day-dropdown').value;
-
-    if (taskText === '') {
-        alert('Please enter a task.');
-        return;
+    localStorage.setItem(type, JSON.stringify(tasks));
+  }
+  
+  function loadTasks() {
+    ["daily", "specific", "weekly", "oneTime"].forEach(type => {
+      const tasks = JSON.parse(localStorage.getItem(type)) || [];
+      tasks.forEach(task => displayTask(type, task));
+    });
+  }
+  
+  function displayTask(type, task) {
+    const listId = {
+      daily: "daily-tasks-list",
+      specific: "specific-day-tasks-list",
+      weekly: "weekly-tasks-list",
+      oneTime: "one-time-tasks-list"
+    }[type];
+  
+    const ul = document.getElementById(listId);
+  
+    // For specific day tasks, only display if it matches the selected day
+    const selectedDay = document.getElementById("day-selector").value;
+    if (type === "specific" && task.day !== selectedDay) return;
+  
+    const li = document.createElement("li");
+  
+    const taskText = document.createElement("span");
+    taskText.classList.add("task-text");
+    taskText.textContent = task.text;
+  
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
+    checkbox.addEventListener("change", () => toggleTask(type, task, li));
+  
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "X";
+    removeBtn.classList.add("remove-btn");
+    removeBtn.addEventListener("click", () => removeTask(type, task, li));
+  
+    li.appendChild(taskText);
+    li.appendChild(checkbox);
+    li.appendChild(removeBtn);
+    ul.appendChild(li);
+  }
+  
+  function toggleTask(type, task, listItem) {
+    task.completed = !task.completed;
+  
+    if (type === "oneTime" && task.completed) {
+      listItem.remove();
+      deleteTask(type, task);
+    } else {
+      updateTask(type, task);
     }
-
-    const taskId = Date.now();
-    const task = {
-        id: taskId,
-        text: taskText,
-        completed: false
-    };
-
-    const tasks = JSON.parse(localStorage.getItem(selectedDay)) || [];
-    tasks.push(task);
-    localStorage.setItem(selectedDay, JSON.stringify(tasks));
-
-    input.value = ''; // Clear the input field
-
-    loadTasks(); // Reload tasks to reflect the new one
-}
-
-// Toggle task completion
-function toggleTaskCompletion(taskElement, taskType, taskId) {
-    taskElement.classList.toggle('checked');
-    const tasks = JSON.parse(localStorage.getItem(taskType)) || [];
-    const taskIndex = tasks.findIndex(task => task.id === taskId);
-    if (taskIndex > -1) {
-        tasks[taskIndex].completed = !tasks[taskIndex].completed;
-        localStorage.setItem(taskType, JSON.stringify(tasks));
+  
+    listItem.style.textDecoration = task.completed ? "line-through" : "none";
+    listItem.style.color = task.completed ? "green" : "black";
+  }
+  
+  function updateTask(type, task) {
+    let tasks = JSON.parse(localStorage.getItem(type)) || [];
+    const index = tasks.findIndex(t => t.text === task.text);
+    tasks[index] = task;
+    localStorage.setItem(type, JSON.stringify(tasks));
+  }
+  
+  function removeTask(type, task, listItem) {
+    listItem.remove();
+    deleteTask(type, task);
+  }
+  
+  function deleteTask(type, task) {
+    let tasks = JSON.parse(localStorage.getItem(type)) || [];
+    tasks = tasks.filter(t => t.text !== task.text);
+    localStorage.setItem(type, JSON.stringify(tasks));
+  }
+  
+  function getToday() {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return days[new Date().getDay()];
+  }
+  
+  function updateSpecificDayHeading(selectedDay) {
+    document.getElementById("specific-day-heading").textContent = `${selectedDay} Tasks`;
+  }
+  
+  // Updates tasks and heading when a new day is selected in the dropdown
+  function updateSpecificDayTasks() {
+    const selectedDay = document.getElementById("day-selector").value;
+    updateSpecificDayHeading(selectedDay);
+  
+    // Clear the current specific day tasks list
+    document.getElementById("specific-day-tasks-list").innerHTML = "";
+  
+    // Reload specific day tasks based on the new selection
+    const specificTasks = JSON.parse(localStorage.getItem("specific")) || [];
+    specificTasks.forEach(task => {
+      if (task.day === selectedDay) {
+        displayTask("specific", task);
+      }
+    });
+  }
+  
+  function checkDailyReset() {
+    const lastDailyReset = localStorage.getItem("lastDailyReset");
+    const today = new Date().toDateString();
+    if (lastDailyReset !== today) {
+      localStorage.setItem("lastDailyReset", today);
+      localStorage.setItem("daily", JSON.stringify([]));
+      document.getElementById("daily-tasks-list").innerHTML = "";
     }
-}
-
-// Remove task from the list
-function removeTask(taskElement, taskType, taskId) {
-    taskElement.remove();
-    const tasks = JSON.parse(localStorage.getItem(taskType)) || [];
-    const updatedTasks = tasks.filter(task => task.id !== taskId);
-    localStorage.setItem(taskType, JSON.stringify(updatedTasks));
-}
-
-// Clear all tasks from task list (before loading from localStorage)
-function clearTasks() {
-    document.querySelectorAll('.task-box ul').forEach(ul => ul.innerHTML = '');
-}
+  }
+  
+  function checkWeeklyReset() {
+    const lastWeeklyReset = localStorage.getItem("lastWeeklyReset");
+    const today = new Date();
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)).toDateString();
+  
+    if (lastWeeklyReset !== firstDayOfWeek) {
+      localStorage.setItem("lastWeeklyReset", firstDayOfWeek);
+      localStorage.setItem("weekly", JSON.stringify([]));
+      document.getElementById("weekly-tasks-list").innerHTML = "";
+    }
+  }
   
