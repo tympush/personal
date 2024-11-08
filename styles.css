@@ -1,6 +1,8 @@
+/* Dark theme styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #1e1e1e; /* Dark background */
+    color: #f0f0f0; /* Light text color */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,6 +12,7 @@ body {
   
   h1 {
     margin-top: 20px;
+    color: #ffffff; /* White for main heading */
   }
   
   .container {
@@ -17,21 +20,39 @@ body {
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
-    max-width: 1000px;
+    max-width: 1200px;
+    justify-content: center;
   }
   
   .task-box {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: #2c2c2c; /* Darker box background */
+    border: 1px solid #444; /* Subtle border for contrast */
     border-radius: 8px;
     padding: 20px;
-    width: 220px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Softer shadow */
   }
   
   .task-box h2 {
     font-size: 18px;
-    margin-top: 0;
+    margin: 0;
+    color: #f0f0f0; /* Light text color for headings */
+  }
+  
+  .task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .task-header select {
+    font-size: 14px;
+    padding: 4px;
+    background-color: #444; /* Dark dropdown background */
+    color: #f0f0f0; /* Light text color */
+    border: none;
+    border-radius: 4px;
   }
   
   .task-box ul {
@@ -44,6 +65,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 5px 0;
+    color: #d3d3d3; /* Slightly lighter text for list items */
   }
   
   .task-box li .task-text {
@@ -52,10 +74,11 @@ body {
   
   .task-box li input[type="checkbox"] {
     margin-left: 10px;
+    accent-color: #b67df2; /* Lighter purple for checkbox */
   }
   
   .remove-btn {
-    background-color: red;
+    background-color: #e74c3c; /* Red button for removing items */
     color: white;
     border: none;
     border-radius: 4px;
@@ -65,7 +88,7 @@ body {
   }
   
   button {
-    background-color: #007bff;
+    background-color: #b67df2; /* Lighter purple button */
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -75,6 +98,6 @@ body {
   }
   
   button:hover {
-    background-color: #0056b3;
+    background-color: #d0a8f5; /* Even lighter purple on hover */
   }
   

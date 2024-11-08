@@ -158,3 +158,69 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   
+  document.addEventListener("DOMContentLoaded", () => {
+    loadTasks();
+    selectTodayInDropdown();
+    updateSpecificDayTasks();
+    checkDailyReset();
+    checkWeeklyReset();
+  });
+  
+  // Add a new function for adding reminders
+  function addReminder() {
+    const reminderText = prompt("Enter a reminder:");
+    if (!reminderText) return;
+  
+    const reminder = { text: reminderText };
+    saveReminder(reminder);
+    displayReminder(reminder);
+  }
+  
+  function saveReminder(reminder) {
+    let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+    reminders.push(reminder);
+    localStorage.setItem("reminders", JSON.stringify(reminders));
+  }
+  
+  function displayReminder(reminder) {
+    const ul = document.getElementById("reminders-list");
+    const li = document.createElement("li");
+  
+    const reminderText = document.createElement("span");
+    reminderText.classList.add("task-text");
+    reminderText.textContent = reminder.text;
+  
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "X";
+    removeBtn.classList.add("remove-btn");
+    removeBtn.addEventListener("click", () => removeReminder(reminder, li));
+  
+    li.appendChild(reminderText);
+    li.appendChild(removeBtn);
+    ul.appendChild(li);
+  }
+  
+  function loadTasks() {
+    ["daily", "specific", "weekly", "oneTime", "reminders"].forEach(type => {
+      const tasks = JSON.parse(localStorage.getItem(type)) || [];
+      tasks.forEach(task => {
+        if (type === "reminders") {
+          displayReminder(task);
+        } else {
+          displayTask(type, task);
+        }
+      });
+    });
+  }
+  
+  // Removes reminder from DOM and localStorage
+  function removeReminder(reminder, listItem) {
+    listItem.remove();
+    let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+    reminders = reminders.filter(r => r.text !== reminder.text);
+    localStorage.setItem("reminders", JSON.stringify(reminders));
+  }
+  
+  // Rest of the code for tasks...
+  // (no changes needed here, just keep the task-related functions)
+  

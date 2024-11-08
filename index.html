@@ -15,16 +15,18 @@
       <button onclick="addTask('daily')">Add Task</button>
     </div>
     <div class="task-box" id="specific-day-tasks">
-      <h2 id="specific-day-heading">Tasks for Specific Day</h2>
-      <select id="day-selector" onchange="updateSpecificDayTasks()">
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-        <option value="Sunday">Sunday</option>
-      </select>
+      <div class="task-header">
+        <h2 id="specific-day-heading">Tasks for </h2>
+        <select id="day-selector" onchange="updateSpecificDayTasks()">
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+      </div>
       <ul id="specific-day-tasks-list"></ul>
       <button onclick="addTask('specific')">Add Task</button>
     </div>
@@ -37,6 +39,11 @@
       <h2>One-Time Tasks</h2>
       <ul id="one-time-tasks-list"></ul>
       <button onclick="addTask('oneTime')">Add Task</button>
+    </div>
+    <div class="task-box" id="reminders">
+      <h2>Reminders</h2>
+      <ul id="reminders-list"></ul>
+      <button onclick="addReminder()">Add Reminder</button>
     </div>
   </div>
 
