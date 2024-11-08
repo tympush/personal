@@ -68,7 +68,7 @@ function displayTask(type, task) {
     const li = document.createElement("li");
     if (task.completed) {
         li.classList.add("checked"); // Add the checked class for completed tasks
-        li.style.textDecoration = "line-through"; // Line-through text for completed tasks
+
         li.style.color = "#8bde64"; // Green color for completed tasks
     }
 
@@ -106,11 +106,11 @@ function toggleTask(type, task, listItem) {
     // Update the styling of the task
     if (task.completed) {
         listItem.classList.add("checked");  // Add "checked" class for completed task
-        listItem.style.textDecoration = "line-through";  // Add line-through style
+
         listItem.style.color = "#8bde64";  // Set the green color for completed task
     } else {
         listItem.classList.remove("checked");  // Remove "checked" class for uncompleted task
-        listItem.style.textDecoration = "none";  // Remove line-through style
+
         listItem.style.color = "#d3d3d3";  // Set the original color for uncompleted task
     }
 }

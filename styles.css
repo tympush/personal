@@ -71,12 +71,6 @@ body {
     color: #d3d3d3;
   }
   
-  .task-box li.checked .task-text {
-    color: #8bde64; /* Vibrant green text for completed tasks */
-    text-decoration: line-through; /* Striking out the text */
-    text-decoration-color: #8bde64; /* Line-through color */
-  }
-  
   .task-box li .task-text {
     flex-grow: 1;
   }
@@ -112,7 +106,7 @@ body {
   }
   
   /* Styling for completed tasks */
-  .task-box li.completed .task-text {
+.completed .task-text{
     color: #8bde64; /* Vibrant green for completed tasks */
     text-decoration: line-through; /* Striking out the text */
     text-decoration-color: #8bde64; /* Line-through color */
