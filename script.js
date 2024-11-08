@@ -174,9 +174,15 @@ function displayReminder(reminder) {
 }
 
 function removeReminder(reminder, listItem) {
-    listItem.remove();
+    listItem.remove(); // Remove the reminder from the list on the UI
+
+    // Get current reminders from localStorage
     let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-    reminders = reminders.filter(r => r !== reminder);
+
+    // Filter out the reminder to be removed
+    reminders = reminders.filter(r => r.text !== reminder.text);
+
+    // Save the updated reminders back to localStorage
     localStorage.setItem("reminders", JSON.stringify(reminders));
 }
 
