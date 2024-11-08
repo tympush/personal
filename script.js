@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ul.appendChild(li);
   }
   
-  
   function toggleTask(type, task, listItem) {
     task.completed = !task.completed;
   
@@ -189,4 +188,5 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+  
   
