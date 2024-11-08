@@ -1,8 +1,8 @@
 /* Dark theme styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #1e1e1e; /* Dark background */
-    color: #f0f0f0; /* Light text color */
+    background-color: #1e1e1e;
+    color: #f0f0f0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,7 +12,7 @@ body {
   
   h1 {
     margin-top: 20px;
-    color: #ffffff; /* White for main heading */
+    color: #ffffff;
   }
   
   .container {
@@ -25,18 +25,18 @@ body {
   }
   
   .task-box {
-    background-color: #2c2c2c; /* Darker box background */
-    border: 1px solid #444; /* Subtle border for contrast */
+    background-color: #2c2c2c;
+    border: 1px solid #444;
     border-radius: 8px;
     padding: 20px;
     width: 280px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Softer shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   }
   
   .task-box h2 {
     font-size: 18px;
     margin: 0;
-    color: #f0f0f0; /* Light text color for headings */
+    color: #f0f0f0;
   }
   
   .task-header {
@@ -49,8 +49,8 @@ body {
   .task-header select {
     font-size: 14px;
     padding: 4px;
-    background-color: #444; /* Dark dropdown background */
-    color: #f0f0f0; /* Light text color */
+    background-color: #444;
+    color: #f0f0f0;
     border: none;
     border-radius: 4px;
   }
@@ -64,8 +64,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 0;
-    color: #d3d3d3; /* Slightly lighter text for list items */
+    padding: 10px;
+    background-color: #3a3a3a;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    color: #d3d3d3;
+  }
+  
+  .task-box li.checked .task-text {
+    color: #a9f0a4; /* Green text for completed tasks */
   }
   
   .task-box li .task-text {
@@ -74,11 +81,12 @@ body {
   
   .task-box li input[type="checkbox"] {
     margin-left: 10px;
-    accent-color: #b67df2; /* Lighter purple for checkbox */
+    transform: scale(1.5);
+    accent-color: #b67df2;
   }
   
   .remove-btn {
-    background-color: #e74c3c; /* Red button for removing items */
+    background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 4px;
@@ -88,7 +96,7 @@ body {
   }
   
   button {
-    background-color: #b67df2; /* Lighter purple button */
+    background-color: #b67df2;
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -98,6 +106,6 @@ body {
   }
   
   button:hover {
-    background-color: #d0a8f5; /* Even lighter purple on hover */
+    background-color: #d0a8f5;
   }
   
