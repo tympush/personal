@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadReminders();
     selectTodayInDropdown();
     updateSpecificDayTasks();
-    checkDailyReset();
-    checkWeeklyReset();
 });
 
 // Select today's day in the dropdown and update heading
