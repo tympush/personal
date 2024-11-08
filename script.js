@@ -166,6 +166,7 @@ function loadReminders() {
     reminders.forEach(reminder => displayReminder(reminder));
 }
 
+// Function to display reminders with fade-in effect
 function displayReminder(reminder) {
     const ul = document.getElementById("reminders-list");
     const li = document.createElement("li");
@@ -181,19 +182,31 @@ function displayReminder(reminder) {
 
     li.appendChild(reminderText);
     li.appendChild(removeBtn);
+
+    // Append the reminder item (it will start with opacity 0)
     ul.appendChild(li);
+
+    // Trigger fade-in by adding the .fade-in class after a slight delay
+    setTimeout(() => {
+        li.classList.add("fade-in");
+    }, 10); // Small timeout to ensure the element is rendered before starting the fade-in
 }
 
 function removeReminder(reminder, listItem) {
-    listItem.remove(); // Remove the reminder from the list on the UI
+    // Apply fade-out effect by adding the class
+    listItem.classList.add("fade-out");
 
-    // Get current reminders from localStorage
+    // After the fade-out transition ends, remove the reminder from the DOM and localStorage
+    setTimeout(() => {
+        listItem.remove(); // Remove from DOM
+        deleteReminder(reminder); // Remove from localStorage
+    }, 300); // Match this duration with the CSS transition time
+}
+
+// Function to delete a reminder from localStorage
+function deleteReminder(reminder) {
     let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-
-    // Filter out the reminder to be removed
-    reminders = reminders.filter(r => r.text !== reminder.text);
-
-    // Save the updated reminders back to localStorage
+    reminders = reminders.filter(r => r.text !== reminder.text); // Remove the reminder
     localStorage.setItem("reminders", JSON.stringify(reminders));
 }
 
