@@ -1,6 +1,7 @@
 // Initialization and loading tasks from local storage
 document.addEventListener("DOMContentLoaded", () => {
     loadTasks();
+    loadReminders();
     selectTodayInDropdown();
     updateSpecificDayTasks();
     checkDailyReset();
@@ -10,8 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Select today's day in the dropdown and update heading
   function selectTodayInDropdown() {
     const today = getToday();
-    document.getElementById("day-selector").value = today;
+    document.getElementById("day-selector").value = today;  // Set dropdown to today
     updateSpecificDayHeading(today);
+  }
+  
+  // Get the current day of the week (e.g., 'Monday', 'Tuesday')
+  function getToday() {
+    const today = new Date();
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return dayNames[today.getDay()]; // Get the current day (0-6), map it to a name
   }
   
   function addTask(type) {
@@ -22,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     if (type === "specific") {
       const selectedDay = document.getElementById("day-selector").value;
-      task.day = selectedDay;
+      task.day = selectedDay;  // Save task with specific day
     }
   
     saveTask(type, task);
@@ -36,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function loadTasks() {
+    // Load tasks from localStorage for all types
     ["daily", "specific", "weekly", "oneTime"].forEach(type => {
       const tasks = JSON.parse(localStorage.getItem(type)) || [];
       tasks.forEach(task => displayTask(type, task));
@@ -54,9 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // For specific day tasks, only display if it matches the selected day
     const selectedDay = document.getElementById("day-selector").value;
-    if (type === "specific" && task.day !== selectedDay) return;
+    if (type === "specific" && task.day !== selectedDay) return; // Filter tasks for the selected day
   
     const li = document.createElement("li");
+    if (task.completed) li.classList.add("checked");
   
     const taskText = document.createElement("span");
     taskText.classList.add("task-text");
@@ -75,12 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
     li.appendChild(taskText);
     li.appendChild(checkbox);
     li.appendChild(removeBtn);
-  
-    // Apply styles based on completion state
-    if (task.completed) {
-      li.classList.add("completed"); // Add 'completed' class if task is completed
-    }
-  
     ul.appendChild(li);
   }
   
@@ -94,17 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
       updateTask(type, task);
     }
   
-    const taskText = listItem.querySelector(".task-text");
-    taskText.style.color = task.completed ? "#8bde64" : "#f0f0f0"; // Vibrant green when checked, white when unchecked
-    taskText.style.textDecoration = task.completed ? "line-through" : "none"; // Line-through for completed tasks
-    taskText.style.textDecorationColor = task.completed ? "#8bde64" : "transparent"; // Line-through color for completed tasks
-  
-    // Apply 'completed' class when checked
-    if (task.completed) {
-      listItem.classList.add("completed");
-    } else {
-      listItem.classList.remove("completed");
-    }
+    // Update the styling of the task
+    listItem.style.textDecoration = task.completed ? "line-through" : "none";
+    listItem.style.color = task.completed ? "#8bde64" : "#d3d3d3"; // Green for completed tasks
   }
   
   function updateTask(type, task) {
@@ -125,72 +121,50 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem(type, JSON.stringify(tasks));
   }
   
-  function getToday() {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    return days[new Date().getDay()];
+  function addReminder() {
+    const reminderText = prompt("Enter a reminder:");
+    if (!reminderText) return;
+  
+    let reminder = { text: reminderText };
+  
+    let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+    reminders.push(reminder);
+    localStorage.setItem("reminders", JSON.stringify(reminders));
+  
+    displayReminder(reminder);
   }
   
-  function updateSpecificDayHeading(selectedDay) {
-    document.getElementById("specific-day-heading").textContent = `${selectedDay} Tasks`;
+  function loadReminders() {
+    const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+    reminders.forEach(reminder => displayReminder(reminder));
   }
   
-  // Updates tasks and heading when a new day is selected in the dropdown
-  function updateSpecificDayTasks() {
-    const selectedDay = document.getElementById("day-selector").value;
-    updateSpecificDayHeading(selectedDay);
+  function displayReminder(reminder) {
+    const ul = document.getElementById("reminders-list");
+    const li = document.createElement("li");
   
-    // Clear the current specific day tasks list
-    document.getElementById("specific-day-tasks-list").innerHTML = "";
+    const reminderText = document.createElement("span");
+    reminderText.classList.add("task-text");
+    reminderText.textContent = reminder.text;
   
-    // Reload specific day tasks based on the new selection
-    const specificTasks = JSON.parse(localStorage.getItem("specific")) || [];
-    specificTasks.forEach(task => {
-      if (task.day === selectedDay) {
-        displayTask("specific", task);
-      }
-    });
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "X";
+    removeBtn.classList.add("remove-btn");
+    removeBtn.addEventListener("click", () => removeReminder(reminder, li));
+  
+    li.appendChild(reminderText);
+    li.appendChild(removeBtn);
+    ul.appendChild(li);
   }
   
-  function checkDailyReset() {
-    const lastDailyReset = localStorage.getItem("lastDailyReset");
-    const today = new Date().toDateString();
-    if (lastDailyReset !== today) {
-      localStorage.setItem("lastDailyReset", today);
-      resetDailyTasks();
-    }
+  function removeReminder(reminder, listItem) {
+    listItem.remove();
+    let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+    reminders = reminders.filter(r => r !== reminder);
+    localStorage.setItem("reminders", JSON.stringify(reminders));
   }
   
-  function checkWeeklyReset() {
-    const lastWeeklyReset = localStorage.getItem("lastWeeklyReset");
-    const today = new Date();
-    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)).toDateString();
-  
-    if (lastWeeklyReset !== firstDayOfWeek) {
-      localStorage.setItem("lastWeeklyReset", firstDayOfWeek);
-      resetWeeklyTasks();
-    }
+  function updateSpecificDayHeading(day) {
+    document.getElementById("specific-day-heading").textContent = `Tasks for ${day}`;
   }
-  
-  function resetDailyTasks() {
-    let dailyTasks = JSON.parse(localStorage.getItem("daily")) || [];
-    dailyTasks = dailyTasks.map(task => {
-      task.completed = false;  // Uncheck all daily tasks
-      return task;
-    });
-    localStorage.setItem("daily", JSON.stringify(dailyTasks));
-    document.getElementById("daily-tasks-list").innerHTML = "";
-    loadTasks();
-  }
-  
-  function resetWeeklyTasks() {
-    let weeklyTasks = JSON.parse(localStorage.getItem("weekly")) || [];
-    weeklyTasks = weeklyTasks.map(task => {
-      task.completed = false;  // Uncheck all weekly tasks
-      return task;
-    });
-    localStorage.setItem("weekly", JSON.stringify(weeklyTasks));
-    document.getElementById("weekly-tasks-list").innerHTML = "";
-    loadTasks();
-  }
-  
   
