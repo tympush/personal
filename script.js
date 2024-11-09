@@ -1,5 +1,6 @@
 // Initialization and loading tasks from local storage
 document.addEventListener("DOMContentLoaded", () => {
+    resetTaskCompletionStatus();
     loadTasks();
     loadReminders();
     selectTodayInDropdown();
@@ -20,11 +21,53 @@ function getToday() {
     return dayNames[today.getDay()]; // Get the current day (0-6), map it to a name
 }
 
+// Reset task completion statuses based on date and type
+function resetTaskCompletionStatus() {
+    // Check each type of tasks and reset completion if needed
+    ["daily", "specific", "weekly"].forEach(type => {
+        let tasks = JSON.parse(localStorage.getItem(type)) || [];
+        tasks = tasks.map(task => {
+            if (task.completed && task.completedDate) {
+                const taskDate = new Date(task.completedDate);
+                const currentDate = new Date();
+                const dayOfWeek = currentDate.getDay(); // 0-6 where 0 is Sunday
+
+                if (type === "daily" && !isSameDay(taskDate, currentDate)) {
+                    task.completed = false;
+                    task.completedDate = null;
+                } else if (type === "specific" && task.day !== getToday()) {
+                    task.completed = false;
+                    task.completedDate = null;
+                } else if (type === "weekly" && dayOfWeek === 1 && !isSameWeek(taskDate, currentDate)) {
+                    task.completed = false;
+                    task.completedDate = null;
+                }
+            }
+            return task;
+        });
+        localStorage.setItem(type, JSON.stringify(tasks));
+    });
+}
+
+// Helper to check if two dates are the same calendar day
+function isSameDay(date1, date2) {
+    return date1.toDateString() === date2.toDateString();
+}
+
+// Helper to check if two dates are in the same week (from Sunday to Saturday)
+function isSameWeek(date1, date2) {
+    const startOfWeek = new Date(date2);
+    startOfWeek.setDate(date2.getDate() - date2.getDay()); // Start of the week (Sunday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6); // End of the week (Saturday)
+    return date1 >= startOfWeek && date1 <= endOfWeek;
+}
+
 function addTask(type) {
     const taskText = prompt("Enter a task:");
     if (!taskText) return;
 
-    let task = { text: taskText, completed: false };
+    let task = { text: taskText, completed: false, completedDate: null };
 
     if (type === "specific") {
         const selectedDay = document.getElementById("day-selector").value;
@@ -58,21 +101,12 @@ function displayTask(type, task) {
     }[type];
 
     const ul = document.getElementById(listId);
-
-    // For specific day tasks, only display if it matches the selected day
     const selectedDay = document.getElementById("day-selector").value;
-    if (type === "specific" && task.day !== selectedDay) return; // Filter tasks for the selected day
+    if (type === "specific" && task.day !== selectedDay) return;
 
     const li = document.createElement("li");
-    
-    // Add a specific class for one-time tasks for styling purposes
-    if (type === "oneTime") {
-        li.classList.add("one-time-task");
-    }
-
-    if (task.completed) {
-        li.classList.add("checked"); // Add the checked class for completed tasks
-    }
+    if (type === "oneTime") li.classList.add("one-time-task");
+    if (task.completed) li.classList.add("checked");
 
     const taskText = document.createElement("span");
     taskText.classList.add("task-text");
@@ -92,39 +126,38 @@ function displayTask(type, task) {
     li.appendChild(checkbox);
     li.appendChild(removeBtn);
 
-    // Append the task item (it will start with opacity 0)
     ul.appendChild(li);
+    setTimeout(() => li.classList.add("fade-in"), 10);
+}
 
-    // Trigger fade-in by adding the .fade-in class after a slight delay
+function removeTask(type, task, listItem) {
+    listItem.classList.add("fade-out");
     setTimeout(() => {
-        li.classList.add("fade-in");
-    }, 10); // Small timeout to ensure the element is rendered before starting the fade-in
+        listItem.remove();
+        deleteTask(type, task);
+    }, 300);
 }
 
 function toggleTask(type, task, listItem) {
     task.completed = !task.completed;
+    task.completedDate = task.completed ? new Date().toISOString() : null;
 
-    // If it's a one-time task and it's completed, apply fade-out effect and remove
     if (type === "oneTime" && task.completed) {
-        // Apply fade-out effect by adding the class
         listItem.classList.add("fade-out");
-
-        // After the 1.5-second fade-out transition ends, remove the task from the DOM and localStorage
         setTimeout(() => {
-            listItem.remove(); // Remove from DOM
-            deleteTask(type, task); // Remove from localStorage
-        }, 1500); // 1.5-second fade-out duration
+            listItem.remove();
+            deleteTask(type, task);
+        }, 1500);
     } else {
         updateTask(type, task);
     }
 
-    // Update the styling of the task
     if (task.completed) {
-        listItem.classList.add("checked");  // Add "checked" class for completed task
-        listItem.style.color = "#8bde64";  // Set the green color for completed task
+        listItem.classList.add("checked");
+        listItem.style.color = "#8bde64";
     } else {
-        listItem.classList.remove("checked");  // Remove "checked" class for uncompleted task
-        listItem.style.color = "#d3d3d3";  // Set the original color for uncompleted task
+        listItem.classList.remove("checked");
+        listItem.style.color = "#d3d3d3";
     }
 }
 
@@ -132,11 +165,11 @@ function toggleTask(type, task, listItem) {
 
 function updateTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
-    const index = tasks.findIndex(t => t.text === task.text && t.day === task.day); // Match day too
+    const index = tasks.findIndex(t => t.text === task.text && t.day === task.day);
     if (index !== -1) {
-        tasks[index] = task; // Update the task
+        tasks[index] = task;
     } else {
-        tasks.push(task); // In case it's a new task
+        tasks.push(task);
     }
     localStorage.setItem(type, JSON.stringify(tasks));
 }
@@ -154,7 +187,7 @@ function removeTask(type, task, listItem) {
 
 function deleteTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
-    tasks = tasks.filter(t => t.text !== task.text || (task.day && t.day !== task.day)); // Remove based on day as well
+    tasks = tasks.filter(t => t.text !== task.text || (task.day && t.day !== task.day));
     localStorage.setItem(type, JSON.stringify(tasks));
 }
 
