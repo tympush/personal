@@ -113,6 +113,17 @@ function displayTask(type, task) {
     taskText.classList.add("task-text");
     taskText.textContent = task.text;
 
+    // Create the up and down arrow buttons
+    const upButton = document.createElement("button");
+    upButton.classList.add("move-up");
+    upButton.textContent = "▲";
+    upButton.addEventListener("click", () => moveTask(type, task, li, "up"));
+
+    const downButton = document.createElement("button");
+    downButton.classList.add("move-down");
+    downButton.textContent = "▼";
+    downButton.addEventListener("click", () => moveTask(type, task, li, "down"));
+
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
@@ -123,13 +134,36 @@ function displayTask(type, task) {
     removeBtn.classList.add("remove-btn");
     removeBtn.addEventListener("click", () => removeTask(type, task, li));
 
+    // Append elements in order: task text, up button, down button, checkbox, remove button
     li.appendChild(taskText);
+    li.appendChild(upButton);
+    li.appendChild(downButton);
     li.appendChild(checkbox);
     li.appendChild(removeBtn);
 
     ul.appendChild(li);
     setTimeout(() => li.classList.add("fade-in"), 10);
 }
+
+// Function to move a task up or down in the list
+function moveTask(type, task, listItem, direction) {
+    const ul = listItem.parentNode;
+    const tasks = JSON.parse(localStorage.getItem(type)) || [];
+    const index = Array.from(ul.children).indexOf(listItem);
+    
+    if (direction === "up" && index > 0) {
+        ul.insertBefore(listItem, ul.children[index - 1]);
+        [tasks[index - 1], tasks[index]] = [tasks[index], tasks[index - 1]]; // Swap in tasks array
+    } else if (direction === "down" && index < ul.children.length - 1) {
+        ul.insertBefore(listItem, ul.children[index + 2] || null);
+        [tasks[index + 1], tasks[index]] = [tasks[index], tasks[index + 1]]; // Swap in tasks array
+    }
+    
+    // Update the task order in localStorage
+    localStorage.setItem(type, JSON.stringify(tasks));
+}
+
+
 
 function removeTask(type, task, listItem) {
     // Show confirmation popup only for "longTerm" goals

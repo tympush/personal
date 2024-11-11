@@ -222,3 +222,39 @@ button:hover {
 .delete-confirmation-no:hover {
     background-color: #7f8c8d;
 }
+
+
+
+
+
+
+/* Styling for the move up and move down buttons */
+.move-up,
+.move-down {
+    font-size: 14px;
+    padding: 5px;
+    margin: 0 3px;
+    border: none;
+    background-color: #ddd;
+    color: #333;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.move-up:hover,
+.move-down:hover {
+    background-color: #bbb;
+}
+
+.move-up:active,
+.move-down:active {
+    background-color: #aaa;
+}
+
+/* Additional layout styling for tasks */
+.task-text {
+    display: inline-block;
+    margin-right: 8px;
+}
+
