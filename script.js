@@ -113,7 +113,11 @@ function displayTask(type, task) {
     taskText.classList.add("task-text");
     taskText.textContent = task.text;
 
-    // Create the up and down arrow buttons
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
+    checkbox.addEventListener("change", () => toggleTask(type, task, li));
+
     const upButton = document.createElement("button");
     upButton.classList.add("move-up");
     upButton.textContent = "▲";
@@ -124,26 +128,23 @@ function displayTask(type, task) {
     downButton.textContent = "▼";
     downButton.addEventListener("click", () => moveTask(type, task, li, "down"));
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = task.completed;
-    checkbox.addEventListener("change", () => toggleTask(type, task, li));
-
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "X";
     removeBtn.classList.add("remove-btn");
     removeBtn.addEventListener("click", () => removeTask(type, task, li));
 
-    // Append elements in order: task text, up button, down button, checkbox, remove button
+    // Append elements in the new order: task text, checkbox, up arrow, down arrow, remove button
     li.appendChild(taskText);
+    li.appendChild(checkbox);
     li.appendChild(upButton);
     li.appendChild(downButton);
-    li.appendChild(checkbox);
     li.appendChild(removeBtn);
 
     ul.appendChild(li);
     setTimeout(() => li.classList.add("fade-in"), 10);
 }
+
+
 
 // Function to move a task up or down in the list
 function moveTask(type, task, listItem, direction) {
