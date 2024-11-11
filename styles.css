@@ -20,7 +20,7 @@ h1 {
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
-    max-width: 1400px;
+    max-width: 1200px;
     justify-content: center;
 }
 
@@ -29,7 +29,7 @@ h1 {
     border: 1px solid #444;
     border-radius: 8px;
     padding: 20px;
-    width: 360px;
+    width: 320px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -90,7 +90,7 @@ h1 {
     white-space: normal; /* Allow text to wrap */
     flex-grow: 1; /* Allow text to take up remaining space */
     transition: color 0.3s ease, text-decoration-color 0.3s ease, text-decoration 0.3s ease;
-    max-width: calc(100% - 100px); /* Ensure text doesn't overflow (space for buttons) */
+    max-width: calc(100% - 55px); /* Ensure text doesn't overflow (space for buttons) */
 }
 
 /* Styling for completed tasks */
@@ -106,8 +106,7 @@ h1 {
 }
 
 .task-box li input[type="checkbox"] {
-    margin-left: 10px;
-    margin-right: 8px;
+    margin-left: 15px;
     transform: scale(1.5);
     accent-color: #b67df2;
 }
@@ -226,28 +225,3 @@ button:hover {
 
 
 
-
-
-/* Styling for the move up and move down buttons */
-.move-up,
-.move-down {
-    font-size: 8px;
-    padding: 5px;
-    margin: 0px 1px;
-    border: none;
-    background-color: #ddd;
-    color: #333;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: background-color 0.2s;
-}
-
-.move-up:hover,
-.move-down:hover {
-    background-color: #bbb;
-}
-
-.move-up:active,
-.move-down:active {
-    background-color: #aaa;
-}

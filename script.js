@@ -106,7 +106,10 @@ function displayTask(type, task) {
     if (type === "specific" && task.day !== selectedDay) return;
 
     const li = document.createElement("li");
-    if (type === "oneTime") li.classList.add("one-time-task");
+    li.draggable = true;  // Make list item draggable
+    li.classList.add("draggable-task");
+    li.dataset.taskText = task.text;  // Store task text for drag identification
+
     if (task.completed) li.classList.add("checked");
 
     const taskText = document.createElement("span");
@@ -118,31 +121,73 @@ function displayTask(type, task) {
     checkbox.checked = task.completed;
     checkbox.addEventListener("change", () => toggleTask(type, task, li));
 
-    const upButton = document.createElement("button");
-    upButton.classList.add("move-up");
-    upButton.textContent = "▲";
-    upButton.addEventListener("click", () => moveTask(type, task, li, "up"));
-
-    const downButton = document.createElement("button");
-    downButton.classList.add("move-down");
-    downButton.textContent = "▼";
-    downButton.addEventListener("click", () => moveTask(type, task, li, "down"));
-
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "X";
     removeBtn.classList.add("remove-btn");
     removeBtn.addEventListener("click", () => removeTask(type, task, li));
 
-    // Append elements in the new order: task text, checkbox, up arrow, down arrow, remove button
+    // Append elements in the new order: task text, checkbox, remove button
     li.appendChild(taskText);
     li.appendChild(checkbox);
-    li.appendChild(upButton);
-    li.appendChild(downButton);
     li.appendChild(removeBtn);
-
     ul.appendChild(li);
+
+    // Event listeners for drag-and-drop
+    li.addEventListener("dragstart", handleDragStart);
+    li.addEventListener("dragover", handleDragOver);
+    li.addEventListener("drop", (e) => handleDrop(e, type));
+    li.addEventListener("dragend", handleDragEnd);
+
     setTimeout(() => li.classList.add("fade-in"), 10);
 }
+
+// Handle drag start event
+function handleDragStart(e) {
+    e.dataTransfer.setData("text/plain", e.target.dataset.taskText);
+    e.target.classList.add("dragging");
+}
+
+// Handle drag over event
+function handleDragOver(e) {
+    e.preventDefault();  // Necessary to allow drop
+    const draggingItem = document.querySelector(".dragging");
+    if (e.target.classList.contains("draggable-task") && e.target !== draggingItem) {
+        const ul = e.target.closest("ul");
+        ul.insertBefore(draggingItem, e.target.nextSibling); // Insert above or below
+    }
+}
+
+// Handle drop event to reorder tasks
+function handleDrop(e, type) {
+    e.preventDefault();
+    const droppedTaskText = e.dataTransfer.getData("text/plain");
+    reorderTasksInLocalStorage(type, droppedTaskText);
+}
+
+// Handle drag end to remove styling
+function handleDragEnd(e) {
+    e.target.classList.remove("dragging");
+}
+
+// Reorder tasks in local storage after drag-and-drop
+function reorderTasksInLocalStorage(type, draggedTaskText) {
+    const ul = document.getElementById({
+        daily: "daily-tasks-list",
+        specific: "specific-day-tasks-list",
+        weekly: "weekly-tasks-list",
+        oneTime: "one-time-tasks-list",
+        longTerm: "long-term-goals-list"
+    }[type]);
+
+    const reorderedTasks = Array.from(ul.children).map(li => ({
+        text: li.querySelector(".task-text").textContent,
+        completed: li.classList.contains("checked"),
+        day: li.dataset.day
+    }));
+
+    localStorage.setItem(type, JSON.stringify(reorderedTasks));
+}
+
 
 
 
