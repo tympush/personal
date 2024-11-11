@@ -86,7 +86,7 @@ function saveTask(type, task) {
 
 function loadTasks() {
     // Load tasks from localStorage for all types
-    ["daily", "specific", "weekly", "oneTime"].forEach(type => {
+    ["daily", "specific", "weekly", "oneTime", "longTerm"].forEach(type => {
         const tasks = JSON.parse(localStorage.getItem(type)) || [];
         tasks.forEach(task => displayTask(type, task));
     });
@@ -97,7 +97,8 @@ function displayTask(type, task) {
         daily: "daily-tasks-list",
         specific: "specific-day-tasks-list",
         weekly: "weekly-tasks-list",
-        oneTime: "one-time-tasks-list"
+        oneTime: "one-time-tasks-list",
+        longTerm: "long-term-goals-list"
     }[type];
 
     const ul = document.getElementById(listId);
@@ -148,6 +149,8 @@ function toggleTask(type, task, listItem) {
             listItem.remove();
             deleteTask(type, task);
         }, 1500);
+    } else if (type === "longTerm") {
+        updateTask(type, task);
     } else {
         updateTask(type, task);
     }
@@ -161,8 +164,6 @@ function toggleTask(type, task, listItem) {
     }
 }
 
-
-
 function updateTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
     const index = tasks.findIndex(t => t.text === task.text && t.day === task.day);
@@ -172,17 +173,6 @@ function updateTask(type, task) {
         tasks.push(task);
     }
     localStorage.setItem(type, JSON.stringify(tasks));
-}
-
-function removeTask(type, task, listItem) {
-    // Apply fade-out effect by adding the class
-    listItem.classList.add("fade-out");
-
-    // After the fade-out transition ends, remove the task from the DOM and localStorage
-    setTimeout(() => {
-        listItem.remove(); // Remove from DOM
-        deleteTask(type, task); // Remove from localStorage
-    }, 300); // Match this duration with the CSS transition time
 }
 
 function deleteTask(type, task) {
@@ -226,30 +216,24 @@ function displayReminder(reminder) {
     li.appendChild(reminderText);
     li.appendChild(removeBtn);
 
-    // Append the reminder item (it will start with opacity 0)
     ul.appendChild(li);
-
-    // Trigger fade-in by adding the .fade-in class after a slight delay
     setTimeout(() => {
         li.classList.add("fade-in");
-    }, 10); // Small timeout to ensure the element is rendered before starting the fade-in
+    }, 10);
 }
 
 function removeReminder(reminder, listItem) {
-    // Apply fade-out effect by adding the class
     listItem.classList.add("fade-out");
-
-    // After the fade-out transition ends, remove the reminder from the DOM and localStorage
     setTimeout(() => {
-        listItem.remove(); // Remove from DOM
-        deleteReminder(reminder); // Remove from localStorage
-    }, 300); // Match this duration with the CSS transition time
+        listItem.remove();
+        deleteReminder(reminder);
+    }, 300);
 }
 
 // Function to delete a reminder from localStorage
 function deleteReminder(reminder) {
     let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-    reminders = reminders.filter(r => r.text !== reminder.text); // Remove the reminder
+    reminders = reminders.filter(r => r.text !== reminder.text);
     localStorage.setItem("reminders", JSON.stringify(reminders));
 }
 
@@ -262,10 +246,8 @@ function updateSpecificDayTasks() {
     const selectedDay = document.getElementById("day-selector").value;
     updateSpecificDayHeading(selectedDay);
 
-    // Clear the current specific day tasks list
     document.getElementById("specific-day-tasks-list").innerHTML = "";
 
-    // Reload specific day tasks based on the new selection
     const specificTasks = JSON.parse(localStorage.getItem("specific")) || [];
     specificTasks.forEach(task => {
         if (task.day === selectedDay) {
