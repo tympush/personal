@@ -64,7 +64,7 @@ h1 {
 /* Task list item */
 .task-box li {
     display: flex;
-    align-items: flex-start;  /* Align items to the top */
+    align-items: center;  /* Align items to the top */
     justify-content: space-between; /* Ensure space between text and buttons */
     padding: 10px;
     background-color: #3a3a3a;
