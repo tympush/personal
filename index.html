@@ -8,48 +8,65 @@
 </head>
 <body>
   <h1>To-Do List</h1>
-  <div class="container">
-    <div class="task-box" id="daily-tasks">
-      <h2>Daily Tasks</h2>
-      <ul id="daily-tasks-list"></ul>
-      <button onclick="addTask('daily')">Add Task</button>
+
+  <div id="theGrandStructure">
+
+    <div id="settingsBar">
+
     </div>
-    <div class="task-box" id="specific-day-tasks">
-      <div class="task-header">
-        <h2 id="specific-day-heading">Tasks for </h2>
-        <select id="day-selector" onchange="updateSpecificDayTasks()">
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
-        </select>
+
+    <div class="container">
+      <div class="task-box" id="daily-tasks">
+        <h2>Daily Tasks</h2>
+        <ul id="daily-tasks-list"></ul>
+        <button onclick="addTask('daily')">Add Task</button>
       </div>
-      <ul id="specific-day-tasks-list"></ul>
-      <button onclick="addTask('specific')">Add Task</button>
+      <div class="task-box" id="specific-day-tasks">
+        <div class="task-header">
+          <h2 id="specific-day-heading">Tasks for </h2>
+          <select id="day-selector" onchange="updateSpecificDayTasks()">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </div>
+        <ul id="specific-day-tasks-list"></ul>
+        <button onclick="addTask('specific')">Add Task</button>
+      </div>
+      <div class="task-box" id="weekly-tasks">
+        <h2>Weekly Tasks</h2>
+        <ul id="weekly-tasks-list"></ul>
+        <button onclick="addTask('weekly')">Add Task</button>
+      </div>
+      <div class="task-box" id="one-time-tasks">
+        <h2>One-Time Tasks</h2>
+        <ul id="one-time-tasks-list"></ul>
+        <button onclick="addTask('oneTime')">Add Task</button>
+      </div>
+      <div class="task-box" id="long-term-goals">
+        <h2>Long Term Goals</h2>
+        <ul id="long-term-goals-list"></ul>
+        <button onclick="addTask('longTerm')">Add Goal</button>
+      </div>
+      <div class="task-box" id="reminders">
+        <h2>Reminders</h2>
+        <ul id="reminders-list"></ul>
+        <button onclick="addReminder()">Add Reminder</button>
+      </div>
     </div>
-    <div class="task-box" id="weekly-tasks">
-      <h2>Weekly Tasks</h2>
-      <ul id="weekly-tasks-list"></ul>
-      <button onclick="addTask('weekly')">Add Task</button>
+
+    <div id="calendarBar">
+
     </div>
-    <div class="task-box" id="one-time-tasks">
-      <h2>One-Time Tasks</h2>
-      <ul id="one-time-tasks-list"></ul>
-      <button onclick="addTask('oneTime')">Add Task</button>
+
+    <div id="notesBar">
+
     </div>
-    <div class="task-box" id="long-term-goals">
-      <h2>Long Term Goals</h2>
-      <ul id="long-term-goals-list"></ul>
-      <button onclick="addTask('longTerm')">Add Goal</button>
-    </div>
-    <div class="task-box" id="reminders">
-      <h2>Reminders</h2>
-      <ul id="reminders-list"></ul>
-      <button onclick="addReminder()">Add Reminder</button>
-    </div>
+
   </div>
 
   <script src="script.js"></script>
