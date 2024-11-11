@@ -15,10 +15,15 @@ h1 {
     color: #ffffff;
 }
 
-#theGrandStructure{
+#theGrandStructure {
     display: grid;
-    grid-template-columns: 100px 1fr 600px;
+    grid-template-columns: 100px 1fr 540px;
+    width: 100%; /* Ensures grid spans the container fully */
+    max-width: 100%; /* Prevents any overflow */
+    padding: 0; /* Remove padding to avoid overflow */
+    box-sizing: border-box;
 }
+
 
 #settingsBar{
     grid-column: 1/2;
@@ -56,11 +61,11 @@ h1 {
 
 .container {
     grid-column: 2/3;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 20px;
     padding: 20px;
-    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Auto-fit with minimum 320px, expand to fill space */
+    justify-items: center; /* Center align each box in the grid */
 }
 
 .task-box {
@@ -68,9 +73,11 @@ h1 {
     border: 1px solid #444;
     border-radius: 8px;
     padding: 20px;
-    width: 320px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    width: 100%; /* Let the grid control width */
+    max-width: calc(100% - 40px); /* Prevent overflow if the box expands */
 }
+
 
 .task-box h2 {
     font-size: 18px;
