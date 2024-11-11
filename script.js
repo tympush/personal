@@ -163,7 +163,7 @@ function showDeleteConfirmation(confirmCallback) {
 
     // Message in the popup box
     const message = document.createElement("p");
-    message.textContent = "Are you sure you want to delete this long-term goal?";
+    message.innerHTML = "Are you sure you want to remove<br>Long Term Goal?";
     message.classList.add("delete-confirmation-message");
 
     // "Yes" button that confirms deletion
