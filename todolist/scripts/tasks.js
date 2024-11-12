@@ -64,16 +64,22 @@ function addCalendarTask() {
     const taskText = prompt("Enter the calendar task:");
     if (!taskText) return;
 
-    // Prompt for a date in yyyy-mm-dd format
-    const taskDate = prompt("Enter the task date (yyyy-mm-dd):");
-    if (!taskDate || !/^\d{4}-\d{2}-\d{2}$/.test(taskDate)) {
-        alert("Invalid date format. Please use yyyy-mm-dd.");
+    // Prompt for a date in yyyy/mm/dd format
+    let taskDate = prompt("Enter the task date (yyyy/mm/dd):");
+
+    // Validate the input format (yyyy/mm/dd)
+    if (!taskDate || !/^\d{4}\/\d{2}\/\d{2}$/.test(taskDate)) {
+        alert("Invalid date format. Please use yyyy/mm/dd.");
         return;
     }
 
     const task = { text: taskText, date: taskDate, completed: false };
+    
+    // Save the task and update the list of calendar tasks
     saveCalendarTask(task);
-    displayCalendarTask(task);
+
+    // Reload tasks from localStorage and display them (sorting them by date)
+    loadCalendarTasks();  // This will automatically sort and display tasks
 }
 
 function saveTask(type, task) {
@@ -85,7 +91,11 @@ function saveTask(type, task) {
 function saveCalendarTask(task) {
     let tasks = JSON.parse(localStorage.getItem("calendar")) || [];
     tasks.push(task);
-    tasks = sortTasksByDate(tasks); // Sort tasks by date before saving
+
+    // Sort tasks by date before saving them
+    tasks = sortTasksByDate(tasks);
+
+    // Save the sorted tasks back to localStorage
     localStorage.setItem("calendar", JSON.stringify(tasks));
 }
 
@@ -96,10 +106,24 @@ function loadTasks() {
 }
 
 function loadCalendarTasks() {
+    // Get tasks from localStorage
     let tasks = JSON.parse(localStorage.getItem("calendar")) || [];
-    tasks = removeExpiredTasks(tasks); // Remove tasks if more than 3 days past
-    tasks.forEach(task => displayCalendarTask(task));
-    localStorage.setItem("calendar", JSON.stringify(tasks)); // Update storage if tasks were removed
+    
+    // Remove expired tasks
+    tasks = removeExpiredTasks(tasks);
+    
+    // Get the calendar tasks list element
+    const ul = document.getElementById("calendar-tasks-list");
+
+    // Clear the list before adding new tasks
+    ul.innerHTML = "";  // This removes all the existing tasks from the display
+    
+    // Display each task after sorting
+    tasks = sortTasksByDate(tasks);  // Ensure tasks are sorted by date
+    tasks.forEach(task => displayCalendarTask(task));  // Add sorted tasks to the list
+
+    // Update the localStorage with the sorted list of tasks
+    localStorage.setItem("calendar", JSON.stringify(tasks));
 }
 
 function displayTask(type, task) {
@@ -274,19 +298,24 @@ function removeCalendarTask(task, listItem) {
 function removeExpiredTasks(tasks) {
     const currentDate = new Date();
     return tasks.filter(task => {
-        const taskDate = new Date(task.date);
-        const daysDifference = (currentDate - taskDate) / (1000 * 60 * 60 * 24);
+        const taskDate = task.date.split("/").join("-"); // Convert to yyyy-mm-dd for comparison
+        const daysDifference = (currentDate - new Date(taskDate)) / (1000 * 60 * 60 * 24);
         return daysDifference <= 3;
     });
 }
 
 function sortTasksByDate(tasks) {
-    return tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+    return tasks.sort((a, b) => {
+        // Directly compare dates in the yyyy/mm/dd format
+        const dateA = a.date.split("/").join("-"); // Convert to yyyy-mm-dd for comparison
+        const dateB = b.date.split("/").join("-");
+        return new Date(dateA) - new Date(dateB);
+    });
 }
 
 function isTaskExpired(taskDate) {
     const currentDate = new Date();
-    const taskDateObj = new Date(taskDate);
+    const taskDateObj = new Date(taskDate.split("/").join("-")); // Convert to yyyy-mm-dd for comparison
     return taskDateObj < currentDate;
 }
 
