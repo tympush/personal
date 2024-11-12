@@ -131,6 +131,10 @@ h1 {
     max-width: calc(100% - 55px);
 }
 
+#reminders-list .task-text{
+    max-width: calc(100% - 29px);
+}
+
 .checked .task-text {
     color: #8bde64;
     text-decoration: line-through;
