@@ -225,3 +225,32 @@ button:hover {
 .delete-confirmation-no:hover {
     background-color: #7f8c8d;
 }
+
+
+
+
+
+
+/* Styling for calendar tasks */
+#calendar-tasks-list .calendar-task-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    font-size: 1rem;
+}
+
+#calendar-tasks-list .calendar-task-item.checked .task-text {
+    color: #8bde64;
+}
+
+#calendar-tasks-list .calendar-task-item .calendar-remove-btn {
+    margin-left: auto;
+    color: #ff0000;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#calendar-tasks-list .calendar-task-item.expired-task .task-text {
+    color: grey;
+}

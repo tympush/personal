@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    resetTaskCompletionStatus(); loadTasks(); loadReminders(); selectTodayInDropdown(); updateSpecificDayTasks();
+    resetTaskCompletionStatus(); 
+    loadTasks(); 
+    loadReminders(); 
+    selectTodayInDropdown(); 
+    updateSpecificDayTasks();
+    loadCalendarTasks(); // Load calendar tasks on page load
 });
 
 function selectTodayInDropdown() {
@@ -55,16 +60,46 @@ function addTask(type) {
     saveTask(type, task); displayTask(type, task);
 }
 
+function addCalendarTask() {
+    const taskText = prompt("Enter the calendar task:");
+    if (!taskText) return;
+
+    // Prompt for a date in yyyy-mm-dd format
+    const taskDate = prompt("Enter the task date (yyyy-mm-dd):");
+    if (!taskDate || !/^\d{4}-\d{2}-\d{2}$/.test(taskDate)) {
+        alert("Invalid date format. Please use yyyy-mm-dd.");
+        return;
+    }
+
+    const task = { text: taskText, date: taskDate, completed: false };
+    saveCalendarTask(task);
+    displayCalendarTask(task);
+}
+
 function saveTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
     tasks.push(task);
     localStorage.setItem(type, JSON.stringify(tasks));
 }
 
+function saveCalendarTask(task) {
+    let tasks = JSON.parse(localStorage.getItem("calendar")) || [];
+    tasks.push(task);
+    tasks = sortTasksByDate(tasks); // Sort tasks by date before saving
+    localStorage.setItem("calendar", JSON.stringify(tasks));
+}
+
 function loadTasks() {
     ["daily", "specific", "weekly", "oneTime", "longTerm"].forEach(type => {
         (JSON.parse(localStorage.getItem(type)) || []).forEach(task => displayTask(type, task));
     });
+}
+
+function loadCalendarTasks() {
+    let tasks = JSON.parse(localStorage.getItem("calendar")) || [];
+    tasks = removeExpiredTasks(tasks); // Remove tasks if more than 3 days past
+    tasks.forEach(task => displayCalendarTask(task));
+    localStorage.setItem("calendar", JSON.stringify(tasks)); // Update storage if tasks were removed
 }
 
 function displayTask(type, task) {
@@ -91,6 +126,45 @@ function displayTask(type, task) {
     li.addEventListener("dragend", handleDragEnd);
 
     setTimeout(() => li.classList.add("fade-in"), 10);
+}
+
+function displayCalendarTask(task) {
+    const ul = document.getElementById("calendar-tasks-list");
+
+    const li = document.createElement("li");
+    li.classList.add("calendar-task-item");
+    li.dataset.taskDate = task.date;
+    li.classList.toggle("expired-task", isTaskExpired(task.date));
+
+    const taskText = document.createElement("span");
+    taskText.classList.add("task-text");
+    taskText.textContent = `${task.date} - ${task.text}`;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
+    checkbox.addEventListener("change", () => toggleCalendarTask(task, li));
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "X";
+    removeBtn.classList.add("calendar-remove-btn");
+    removeBtn.addEventListener("click", () => removeCalendarTask(task, li));
+
+    li.append(taskText, checkbox, removeBtn);
+    ul.appendChild(li);
+
+    // Add fade-in class to display task
+    setTimeout(() => li.classList.add("fade-in"), 10);
+}
+
+function removeCalendarTask(task, listItem) {
+    listItem.classList.add("fade-out");
+    setTimeout(() => {
+        listItem.remove();
+        let tasks = JSON.parse(localStorage.getItem("calendar")) || [];
+        tasks = tasks.filter(t => t.text !== task.text || t.date !== task.date);
+        localStorage.setItem("calendar", JSON.stringify(tasks));
+    }, 300);
 }
 
 function handleDragStart(e) {
@@ -161,6 +235,12 @@ function toggleTask(type, task, listItem) {
     listItem.style.color = task.completed ? "#8bde64" : "#d3d3d3";
 }
 
+function toggleCalendarTask(task, listItem) {
+    task.completed = !task.completed;
+    updateCalendarTask(task);
+    listItem.classList.toggle("checked", task.completed);
+}
+
 function updateTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
     const index = tasks.findIndex(t => t.text === task.text && t.day === task.day);
@@ -168,10 +248,46 @@ function updateTask(type, task) {
     localStorage.setItem(type, JSON.stringify(tasks));
 }
 
+function updateCalendarTask(task) {
+    let tasks = JSON.parse(localStorage.getItem("calendar")) || [];
+    const index = tasks.findIndex(t => t.text === task.text && t.date === task.date);
+    if (index !== -1) tasks[index] = task;
+    localStorage.setItem("calendar", JSON.stringify(tasks));
+}
+
 function deleteTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
     tasks = tasks.filter(t => t.text !== task.text || (task.day && t.day !== task.day));
     localStorage.setItem(type, JSON.stringify(tasks));
+}
+
+function removeCalendarTask(task, listItem) {
+    listItem.classList.add("fade-out");
+    setTimeout(() => {
+        listItem.remove();
+        let tasks = JSON.parse(localStorage.getItem("calendar")) || [];
+        tasks = tasks.filter(t => t.text !== task.text || t.date !== task.date);
+        localStorage.setItem("calendar", JSON.stringify(tasks));
+    }, 300);
+}
+
+function removeExpiredTasks(tasks) {
+    const currentDate = new Date();
+    return tasks.filter(task => {
+        const taskDate = new Date(task.date);
+        const daysDifference = (currentDate - taskDate) / (1000 * 60 * 60 * 24);
+        return daysDifference <= 3;
+    });
+}
+
+function sortTasksByDate(tasks) {
+    return tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+
+function isTaskExpired(taskDate) {
+    const currentDate = new Date();
+    const taskDateObj = new Date(taskDate);
+    return taskDateObj < currentDate;
 }
 
 function addReminder() {
@@ -192,7 +308,21 @@ function displayReminder(reminder) {
     reminderText.classList.add("task-text"); reminderText.textContent = reminder.text;
     removeBtn.textContent = "X"; removeBtn.classList.add("remove-btn"); removeBtn.addEventListener("click", () => removeReminder(reminder, li));
     li.append(reminderText, removeBtn);
+
     ul.appendChild(li);
+
+    // Add fade-in class to display reminder
+    setTimeout(() => li.classList.add("fade-in"), 10);
+}
+
+function removeReminder(reminder, listItem) {
+    listItem.classList.add("fade-out");
+    setTimeout(() => {
+        listItem.remove();
+        let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+        reminders = reminders.filter(r => r.text !== reminder.text);
+        localStorage.setItem("reminders", JSON.stringify(reminders));
+    }, 300);
 }
 
 function removeReminder(reminder, listItem) {
@@ -208,5 +338,10 @@ function updateSpecificDayTasks() {
 }
 
 function updateSpecificDayHeading(selectedDay) {
-    document.getElementById("specific-day-tasks-heading").textContent = `Tasks for ${selectedDay}`;
+    const headingElement = document.getElementById("specific-day-heading");
+    if (headingElement) {
+        headingElement.textContent = `Tasks for ${selectedDay}`;
+    } else {
+        console.error("Element with ID 'specific-day-heading' not found.");
+    }
 }
