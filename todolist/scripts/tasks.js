@@ -171,7 +171,7 @@ function displayCalendarTask(task) {
 
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "X";
-    removeBtn.classList.add("calendar-remove-btn");
+    removeBtn.classList.add("remove-btn"); // Apply same class as other remove buttons
     removeBtn.addEventListener("click", () => removeCalendarTask(task, li));
 
     li.append(taskText, checkbox, removeBtn);
