@@ -24,21 +24,22 @@ function getToday() {
 function resetTaskCompletionStatus() {
     // Check each type of tasks and reset completion if needed
     ["dailySpecific", "weekly", "oneTime"].forEach(type => {
-        const tasks = JSON.parse(localStorage.getItem(type)) || [];
-        tasks.forEach(task => {
+        let tasks = JSON.parse(localStorage.getItem(type)) || [];
+        tasks = tasks.map(task => {
             if (task.completed && task.completedDate) {
                 const taskDate = new Date(task.completedDate);
                 const currentDate = new Date();
                 const dayOfWeek = currentDate.getDay(); // 0-6 where 0 is Sunday
 
-                if (task.day && !isSameDay(taskDate, currentDate)) {
+                if (type === "dailySpecific" && !isSameDay(taskDate, currentDate)) {
                     task.completed = false;
                     task.completedDate = null;
-                } else if (!task.day && !isSameDay(taskDate, currentDate)) {
+                } else if (type === "weekly" && dayOfWeek === 1 && !isSameWeek(taskDate, currentDate)) {
                     task.completed = false;
                     task.completedDate = null;
                 }
             }
+            return task;
         });
         localStorage.setItem(type, JSON.stringify(tasks));
     });
@@ -49,38 +50,47 @@ function isSameDay(date1, date2) {
     return date1.toDateString() === date2.toDateString();
 }
 
-// Add a task (daily or specific)
+// Helper to check if two dates are in the same week (from Sunday to Saturday)
+function isSameWeek(date1, date2) {
+    const startOfWeek = new Date(date2);
+    startOfWeek.setDate(date2.getDate() - date2.getDay()); // Start of the week (Sunday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6); // End of the week (Saturday)
+    return date1 >= startOfWeek && date1 <= endOfWeek;
+}
+
 function addTask(type) {
     const taskText = prompt("Enter a task:");
     if (!taskText) return;
 
-    let task = { text: taskText, completed: false, completedDate: null, day: null };
+    let task = { text: taskText, completed: false, completedDate: null };
 
+    // If the task is specific, add the day property
     if (type === "specific") {
         const selectedDay = document.getElementById("daily-specific-day-selector").value;
         task.day = selectedDay;  // Save task with specific day
+    } else if (type === "daily") {
+        task.day = null;  // For daily tasks, set day to null
     }
 
-    saveTask(type, task);
-    displayTask(type, task);
+    saveTask("dailySpecific", task); // Save both daily and specific tasks in 'dailySpecific'
+    displayTask("dailySpecific", task);
 }
 
-// Save task in localStorage
 function saveTask(type, task) {
-    const tasks = JSON.parse(localStorage.getItem(type)) || [];
+    let tasks = JSON.parse(localStorage.getItem(type)) || [];
     tasks.push(task);
     localStorage.setItem(type, JSON.stringify(tasks));
 }
 
-// Load tasks from localStorage
 function loadTasks() {
+    // Load tasks from localStorage for all types
     ["dailySpecific", "weekly", "oneTime"].forEach(type => {
         const tasks = JSON.parse(localStorage.getItem(type)) || [];
         tasks.forEach(task => displayTask(type, task));
     });
 }
 
-// Display task
 function displayTask(type, task) {
     const listId = {
         dailySpecific: "daily-specific-tasks-list",
@@ -89,10 +99,12 @@ function displayTask(type, task) {
     }[type];
 
     const ul = document.getElementById(listId);
+    if (!ul) return; // If the list is not found, do nothing
+
     const selectedDay = document.getElementById("daily-specific-day-selector").value;
 
     // Display specific tasks based on selected day
-    if (type === "dailySpecific" && task.day && task.day !== selectedDay) return;
+    if (type === "dailySpecific" && task.day !== null && task.day !== selectedDay) return;
 
     const li = document.createElement("li");
     li.draggable = true;  // Make list item draggable
@@ -193,7 +205,7 @@ function toggleTask(type, task, listItem) {
 
 // Update task in localStorage
 function updateTask(type, task) {
-    const tasks = JSON.parse(localStorage.getItem(type)) || [];
+    let tasks = JSON.parse(localStorage.getItem(type)) || [];
     const index = tasks.findIndex(t => t.text === task.text && t.day === task.day);
     if (index !== -1) {
         tasks[index] = task;
@@ -208,15 +220,10 @@ function removeTask(type, task, listItem) {
     listItem.classList.add("fade-out");
     setTimeout(() => {
         listItem.remove();
-        deleteTask(type, task);
-    }, 300); // Match duration with CSS transition time
-}
-
-// Delete task from localStorage
-function deleteTask(type, task) {
-    const tasks = JSON.parse(localStorage.getItem(type)) || [];
-    const updatedTasks = tasks.filter(t => t.text !== task.text || (task.day && t.day !== task.day));
-    localStorage.setItem(type, JSON.stringify(updatedTasks));
+        let tasks = JSON.parse(localStorage.getItem(type)) || [];
+        tasks = tasks.filter(t => t.text !== task.text || t.day !== task.day);
+        localStorage.setItem(type, JSON.stringify(tasks));
+    }, 300);
 }
 
 // Update heading when the day is selected from dropdown
@@ -227,17 +234,7 @@ function updateSpecificDayHeading(day) {
 
 // This function updates the displayed tasks based on the selected day
 function updateDailySpecificTasks() {
-    const selectedDay = document.getElementById("daily-specific-day-selector").value;  // Get selected day from dropdown
-    const tasks = JSON.parse(localStorage.getItem("dailySpecific")) || [];  // Get all tasks stored under "dailySpecific"
-    
-    const ul = document.getElementById("daily-specific-tasks-list");  // Target the list to update
-
-    // Clear current list before adding updated tasks
-    ul.innerHTML = "";
-
-    tasks.forEach(task => {
-        if (task.day === selectedDay || task.day === null) {  // Show tasks that match selected day or have no specific day
-            displayTask("dailySpecific", task);
-        }
-    });
+    const selectedDay = document.getElementById("daily-specific-day-selector").value;
+    const tasks = JSON.parse(localStorage.getItem("dailySpecific")) || [];
+    tasks.forEach(task => displayTask("dailySpecific", task));
 }
