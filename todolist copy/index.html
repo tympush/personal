@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <h1>To-Do List</h1>
+
+  <div id="theGrandStructure">
+
+    <div class="container">
+
+      <div class="task-box" id="daily-tasks">
+        <h2>Daily Tasks</h2>
+        <ul id="daily-tasks-list"></ul>
+        <button onclick="addTask('daily')">Add Task</button>
+      </div>
+
+      <div class="task-box" id="specific-day-tasks">
+        <div class="task-header">
+          <h2 id="specific-day-heading">Tasks for </h2>
+          <select id="day-selector" onchange="updateSpecificDayTasks()">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </div>
+        <ul id="specific-day-tasks-list"></ul>
+        <button onclick="addTask('specific')">Add Task</button>
+      </div>
+
+      <div class="task-box" id="weekly-tasks">
+        <h2>Weekly Tasks</h2>
+        <ul id="weekly-tasks-list"></ul>
+        <button onclick="addTask('weekly')">Add Task</button>
+      </div>
+
+      <div class="task-box" id="one-time-tasks">
+        <h2>One-Time Tasks</h2>
+        <ul id="one-time-tasks-list"></ul>
+        <button onclick="addTask('oneTime')">Add Task</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="scripts/tasks.js"></script>
+</body>
+</html>
