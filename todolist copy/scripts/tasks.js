@@ -231,47 +231,6 @@ function removeTask(type, task, listItem) {
     }
 }
 
-// Function to show a delete confirmation popup specifically for long-term goals
-function showDeleteConfirmation(confirmCallback) {
-    // Create overlay for popup
-    const popupOverlay = document.createElement("div");
-    popupOverlay.classList.add("delete-confirmation-overlay");
-
-    // Create the popup box
-    const popupBox = document.createElement("div");
-    popupBox.classList.add("delete-confirmation-box");
-
-    // Message in the popup box
-    const message = document.createElement("p");
-    message.innerHTML = "Are you sure you want to remove<br>Long Term Goal?";
-    message.classList.add("delete-confirmation-message");
-
-    // "Yes" button that confirms deletion
-    const yesButton = document.createElement("button");
-    yesButton.textContent = "Yes";
-    yesButton.classList.add("delete-confirmation-yes");
-    yesButton.addEventListener("click", () => {
-        document.body.removeChild(popupOverlay);  // Close popup
-        confirmCallback();  // Execute deletion if confirmed
-    });
-
-    // "No" button that cancels deletion
-    const noButton = document.createElement("button");
-    noButton.textContent = "No";
-    noButton.classList.add("delete-confirmation-no");
-    noButton.addEventListener("click", () => {
-        document.body.removeChild(popupOverlay);  // Close popup without deleting
-    });
-
-    // Append elements to the popup box and overlay
-    popupBox.appendChild(message);
-    popupBox.appendChild(yesButton);
-    popupBox.appendChild(noButton);
-    popupOverlay.appendChild(popupBox);
-    document.body.appendChild(popupOverlay);
-}
-
-
 function toggleTask(type, task, listItem) {
     task.completed = !task.completed;
     task.completedDate = task.completed ? new Date().toISOString() : null;
@@ -312,62 +271,6 @@ function deleteTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
     tasks = tasks.filter(t => t.text !== task.text || (task.day && t.day !== task.day));
     localStorage.setItem(type, JSON.stringify(tasks));
-}
-
-function addReminder() {
-    const reminderText = prompt("Enter a reminder:");
-    if (!reminderText) return;
-
-    let reminder = { text: reminderText };
-
-    let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-    reminders.push(reminder);
-    localStorage.setItem("reminders", JSON.stringify(reminders));
-
-    displayReminder(reminder);
-}
-
-function loadReminders() {
-    const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-    reminders.forEach(reminder => displayReminder(reminder));
-}
-
-// Function to display reminders with fade-in effect
-function displayReminder(reminder) {
-    const ul = document.getElementById("reminders-list");
-    const li = document.createElement("li");
-
-    const reminderText = document.createElement("span");
-    reminderText.classList.add("task-text");
-    reminderText.textContent = reminder.text;
-
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "X";
-    removeBtn.classList.add("remove-btn");
-    removeBtn.addEventListener("click", () => removeReminder(reminder, li));
-
-    li.appendChild(reminderText);
-    li.appendChild(removeBtn);
-
-    ul.appendChild(li);
-    setTimeout(() => {
-        li.classList.add("fade-in");
-    }, 10);
-}
-
-function removeReminder(reminder, listItem) {
-    listItem.classList.add("fade-out");
-    setTimeout(() => {
-        listItem.remove();
-        deleteReminder(reminder);
-    }, 300);
-}
-
-// Function to delete a reminder from localStorage
-function deleteReminder(reminder) {
-    let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-    reminders = reminders.filter(r => r.text !== reminder.text);
-    localStorage.setItem("reminders", JSON.stringify(reminders));
 }
 
 function updateSpecificDayHeading(day) {
