@@ -190,7 +190,7 @@ function removeTask(type, task, listItem) {
     setTimeout(() => {
         listItem.remove();
         deleteTask(type, task);
-    }, 300);
+    }, 500);
 }
 
 function toggleTask(type, task, listItem) {
@@ -202,7 +202,7 @@ function toggleTask(type, task, listItem) {
         setTimeout(() => {
             listItem.remove();
             deleteTask(type, task);
-        }, 1500);
+        }, 2000);
     } else if (type === "longTerm") {
         updateTask(type, task);
     } else {
