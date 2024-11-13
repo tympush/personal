@@ -24,12 +24,12 @@ function resetTaskCompletionStatus() {
                 const currentDate = new Date();
                 const dayOfWeek = currentDate.getDay();
 
-                if (type === "daily" && !isSameDay(taskDate, currentDate)) {
+                if (type === "daily" && task.day === null && !isSameDay(taskDate, currentDate)) {
                     task.completed = false;
                     task.completedDate = null;
-                /*} else if (type === "specific" && task.day !== getToday()) {
+                } else if (type === "daily" && task.day !== null && task.day !== getToday()) {
                     task.completed = false;
-                    task.completedDate = null;*/
+                    task.completedDate = null;
                 } else if (type === "weekly" && dayOfWeek === 1 && !isSameWeek(taskDate, currentDate)) {
                     task.completed = false;
                     task.completedDate = null;
