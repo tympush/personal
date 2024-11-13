@@ -10,19 +10,13 @@
   <h1>To-Do List</h1>
 
   <div id="theGrandStructure">
-
     <div class="container">
 
-      <div class="task-box" id="daily-tasks">
-        <h2>Daily Tasks</h2>
-        <ul id="daily-tasks-list"></ul>
-        <button onclick="addTask('daily')">Add Task</button>
-      </div>
-
-      <div class="task-box" id="specific-day-tasks">
+      <!-- Combined Daily and One-Time Tasks -->
+      <div class="task-box" id="daily-one-time-tasks">
         <div class="task-header">
-          <h2 id="specific-day-heading">Tasks for </h2>
-          <select id="day-selector" onchange="updateSpecificDayTasks()">
+          <h2>Daily & One-Time Tasks</h2>
+          <select id="daily-specific-day-selector" onchange="updateDailySpecificTasks()">
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
             <option value="Wednesday">Wednesday</option>
@@ -30,18 +24,26 @@
             <option value="Friday">Friday</option>
             <option value="Saturday">Saturday</option>
             <option value="Sunday">Sunday</option>
-          </select>
+        </select>           
         </div>
-        <ul id="specific-day-tasks-list"></ul>
-        <button onclick="addTask('specific')">Add Task</button>
+
+        <!-- Buttons for Adding Daily and Specific Tasks -->
+        <button onclick="addTask('daily')">Add Daily Task</button>
+        <button onclick="addTask('specific')">Add Specific Task</button>
+
+        <!-- List for displaying tasks -->
+        <ul id="daily-specific-tasks-list"></ul>  <!-- For daily tasks -->
+        <ul id="specific-day-tasks-list"></ul>   <!-- For specific tasks based on day -->
       </div>
 
+      <!-- Weekly Tasks -->
       <div class="task-box" id="weekly-tasks">
         <h2>Weekly Tasks</h2>
         <ul id="weekly-tasks-list"></ul>
         <button onclick="addTask('weekly')">Add Task</button>
       </div>
 
+      <!-- One-Time Tasks -->
       <div class="task-box" id="one-time-tasks">
         <h2>One-Time Tasks</h2>
         <ul id="one-time-tasks-list"></ul>

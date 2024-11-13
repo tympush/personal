@@ -2,15 +2,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     resetTaskCompletionStatus();
     loadTasks();
-    loadReminders();
     selectTodayInDropdown();
-    updateSpecificDayTasks();
+    updateDailySpecificTasks();
 });
 
 // Select today's day in the dropdown and update heading
 function selectTodayInDropdown() {
     const today = getToday();
-    document.getElementById("day-selector").value = today;  // Set dropdown to today
+    document.getElementById("daily-specific-day-selector").value = today;  // Set dropdown to today
     updateSpecificDayHeading(today);
 }
 
@@ -70,7 +69,7 @@ function addTask(type) {
     let task = { text: taskText, completed: false, completedDate: null };
 
     if (type === "specific") {
-        const selectedDay = document.getElementById("day-selector").value;
+        const selectedDay = document.getElementById("daily-specific-day-selector").value;
         task.day = selectedDay;  // Save task with specific day
     }
 
@@ -86,7 +85,7 @@ function saveTask(type, task) {
 
 function loadTasks() {
     // Load tasks from localStorage for all types
-    ["daily", "specific", "weekly", "oneTime", "longTerm"].forEach(type => {
+    ["daily", "specific", "weekly", "oneTime"].forEach(type => {
         const tasks = JSON.parse(localStorage.getItem(type)) || [];
         tasks.forEach(task => displayTask(type, task));
     });
@@ -94,15 +93,16 @@ function loadTasks() {
 
 function displayTask(type, task) {
     const listId = {
-        daily: "daily-tasks-list",
-        specific: "specific-day-tasks-list",
+        daily: "daily-specific-tasks-list",
+        specific: "daily-specific-tasks-list",
         weekly: "weekly-tasks-list",
-        oneTime: "one-time-tasks-list",
-        longTerm: "long-term-goals-list"
+        oneTime: "one-time-tasks-list"
     }[type];
 
     const ul = document.getElementById(listId);
-    const selectedDay = document.getElementById("day-selector").value;
+    const selectedDay = document.getElementById("daily-specific-day-selector").value;
+
+    // Display specific tasks based on selected day
     if (type === "specific" && task.day !== selectedDay) return;
 
     const li = document.createElement("li");
@@ -172,11 +172,10 @@ function handleDragEnd(e) {
 // Reorder tasks in local storage after drag-and-drop
 function reorderTasksInLocalStorage(type, draggedTaskText) {
     const ul = document.getElementById({
-        daily: "daily-tasks-list",
-        specific: "specific-day-tasks-list",
+        daily: "daily-specific-tasks-list",
+        specific: "daily-specific-tasks-list",
         weekly: "weekly-tasks-list",
-        oneTime: "one-time-tasks-list",
-        longTerm: "long-term-goals-list"
+        oneTime: "one-time-tasks-list"
     }[type]);
 
     const reorderedTasks = Array.from(ul.children).map(li => ({
@@ -188,64 +187,12 @@ function reorderTasksInLocalStorage(type, draggedTaskText) {
     localStorage.setItem(type, JSON.stringify(reorderedTasks));
 }
 
-
-
-
-// Function to move a task up or down in the list
-function moveTask(type, task, listItem, direction) {
-    const ul = listItem.parentNode;
-    const tasks = JSON.parse(localStorage.getItem(type)) || [];
-    const index = Array.from(ul.children).indexOf(listItem);
-    
-    if (direction === "up" && index > 0) {
-        ul.insertBefore(listItem, ul.children[index - 1]);
-        [tasks[index - 1], tasks[index]] = [tasks[index], tasks[index - 1]]; // Swap in tasks array
-    } else if (direction === "down" && index < ul.children.length - 1) {
-        ul.insertBefore(listItem, ul.children[index + 2] || null);
-        [tasks[index + 1], tasks[index]] = [tasks[index], tasks[index + 1]]; // Swap in tasks array
-    }
-    
-    // Update the task order in localStorage
-    localStorage.setItem(type, JSON.stringify(tasks));
-}
-
-
-
-function removeTask(type, task, listItem) {
-    // Show confirmation popup only for "longTerm" goals
-    if (type === "longTerm") {
-        showDeleteConfirmation(() => {
-            listItem.classList.add("fade-out");
-            setTimeout(() => {
-                listItem.remove(); // Remove from DOM
-                deleteTask(type, task); // Remove from localStorage
-            }, 300); // Match duration with CSS transition time
-        });
-    } else {
-        // Normal delete for other task types without confirmation
-        listItem.classList.add("fade-out");
-        setTimeout(() => {
-            listItem.remove();
-            deleteTask(type, task);
-        }, 300);
-    }
-}
-
+// Toggle task completion
 function toggleTask(type, task, listItem) {
     task.completed = !task.completed;
     task.completedDate = task.completed ? new Date().toISOString() : null;
 
-    if (type === "oneTime" && task.completed) {
-        listItem.classList.add("fade-out");
-        setTimeout(() => {
-            listItem.remove();
-            deleteTask(type, task);
-        }, 1500);
-    } else if (type === "longTerm") {
-        updateTask(type, task);
-    } else {
-        updateTask(type, task);
-    }
+    updateTask(type, task);
 
     if (task.completed) {
         listItem.classList.add("checked");
@@ -256,6 +203,7 @@ function toggleTask(type, task, listItem) {
     }
 }
 
+// Update task in localStorage
 function updateTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
     const index = tasks.findIndex(t => t.text === task.text && t.day === task.day);
@@ -267,26 +215,40 @@ function updateTask(type, task) {
     localStorage.setItem(type, JSON.stringify(tasks));
 }
 
+// Remove task from the list and localStorage
+function removeTask(type, task, listItem) {
+    listItem.classList.add("fade-out");
+    setTimeout(() => {
+        listItem.remove();
+        deleteTask(type, task);
+    }, 300); // Match duration with CSS transition time
+}
+
+// Delete task from localStorage
 function deleteTask(type, task) {
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
     tasks = tasks.filter(t => t.text !== task.text || (task.day && t.day !== task.day));
     localStorage.setItem(type, JSON.stringify(tasks));
 }
 
+// Update heading when the day is selected from dropdown
 function updateSpecificDayHeading(day) {
-    document.getElementById("specific-day-heading").textContent = `Tasks for ${day}`;
+    const heading = document.querySelector("#daily-one-time-tasks .task-header h2");
+    heading.textContent = `Daily & One-Time Tasks (${day})`;
 }
 
-// Updates tasks and heading when a new day is selected in the dropdown
-function updateSpecificDayTasks() {
-    const selectedDay = document.getElementById("day-selector").value;
-    updateSpecificDayHeading(selectedDay);
+// This function updates the displayed tasks based on the selected day
+function updateDailySpecificTasks() {
+    const selectedDay = document.getElementById("daily-specific-day-selector").value;  // Get selected day from dropdown
+    const tasks = JSON.parse(localStorage.getItem("specific")) || [];  // Get all tasks stored under "specific"
+    
+    const ul = document.getElementById("daily-specific-tasks-list");  // Target the list to update
 
-    document.getElementById("specific-day-tasks-list").innerHTML = "";
+    // Clear current list before adding updated tasks
+    ul.innerHTML = "";
 
-    const specificTasks = JSON.parse(localStorage.getItem("specific")) || [];
-    specificTasks.forEach(task => {
-        if (task.day === selectedDay) {
+    tasks.forEach(task => {
+        if (task.day === selectedDay) {  // Show only tasks that match the selected day
             displayTask("specific", task);
         }
     });
