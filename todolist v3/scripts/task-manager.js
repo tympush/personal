@@ -130,44 +130,52 @@ function displayTask(type, task) {
 }
 
 function handleDragStart(e) {
-    e.dataTransfer.setData("text/plain", e.target.dataset.taskText);
+    // Save the dragged task's text for reference
+    e.dataTransfer.setData("text/plain", e.target.querySelector(".task-text").textContent);
     e.target.classList.add("dragging");
 }
 
 function handleDragOver(e) {
-    e.preventDefault();  // Necessary to allow drop
+    e.preventDefault(); // Required to allow dropping
     const draggingItem = document.querySelector(".dragging");
     if (e.target.classList.contains("draggable-task") && e.target !== draggingItem) {
         const ul = e.target.closest("ul");
-        ul.insertBefore(draggingItem, e.target.nextSibling); // Insert above or below
+        ul.insertBefore(draggingItem, e.target.nextSibling);  // Place above or below the target element
     }
 }
 
 function handleDrop(e, type) {
     e.preventDefault();
+    // Get the text of the dragged item
     const droppedTaskText = e.dataTransfer.getData("text/plain");
-    reorderTasksInLocalStorage(type, droppedTaskText);
+    reorderTasksInLocalStorage(type);
 }
 
 function handleDragEnd(e) {
     e.target.classList.remove("dragging");
 }
 
-function reorderTasksInLocalStorage(type, draggedTaskText) {
+function reorderTasksInLocalStorage(type) {
+    // Select the appropriate task list container
     const ul = document.getElementById({
-        daily: "daily-specific-day-tasks-lis",
+        daily: "daily-specific-tasks-list",
         weekly: "weekly-tasks-list",
         oneTime: "one-time-tasks-list",
     }[type]);
 
-    const reorderedTasks = Array.from(ul.children).map(li => ({
-        text: li.querySelector(".task-text").textContent,
-        completed: li.classList.contains("checked"),
-        day: li.dataset.day
-    }));
+    // Retrieve the current tasks from localStorage
+    let tasks = JSON.parse(localStorage.getItem(type)) || [];
 
+    // Generate the new order of tasks based on the <li> elements' text content
+    const reorderedTasks = Array.from(ul.children).map(li => {
+        const textContent = li.querySelector(".task-text").textContent;
+        return tasks.find(task => task.text === textContent);
+    });
+
+    // Save the reordered tasks back to localStorage
     localStorage.setItem(type, JSON.stringify(reorderedTasks));
 }
+
 
 function moveTask(type, task, listItem, direction) {
     const ul = listItem.parentNode;
