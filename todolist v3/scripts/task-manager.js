@@ -104,7 +104,12 @@ function displayTask(type, task) {
 
     const taskText = document.createElement("span");
     taskText.classList.add("task-text");
-    taskText.textContent = task.text;
+
+    if (type === "daily" && task.day !== null){
+        taskText.textContent = `${task.text} ✦`;
+    } else {
+        taskText.textContent = task.text;
+    };
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
