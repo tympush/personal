@@ -138,8 +138,22 @@ function handleDragStart(e) {
 function handleDragOver(e) {
     e.preventDefault(); // Required to allow dropping
     const draggingItem = document.querySelector(".dragging");
+    const ul = e.target.closest("ul");
+
+    if (ul) {
+        // Check if the mouse is near the top of the list
+        const rect = ul.getBoundingClientRect();
+        const isAtTop = e.clientY < rect.top + rect.height / ul.children.length;
+
+        if (isAtTop) {
+            // Insert the dragging item at the very top
+            ul.insertBefore(draggingItem, ul.firstElementChild);
+            return;
+        }
+    }
+
+    // Handle dragging within the list (default behavior)
     if (e.target.classList.contains("draggable-task") && e.target !== draggingItem) {
-        const ul = e.target.closest("ul");
         ul.insertBefore(draggingItem, e.target.nextSibling);  // Place above or below the target element
     }
 }
@@ -175,7 +189,6 @@ function reorderTasksInLocalStorage(type) {
     // Save the reordered tasks back to localStorage
     localStorage.setItem(type, JSON.stringify(reorderedTasks));
 }
-
 
 function moveTask(type, task, listItem, direction) {
     const ul = listItem.parentNode;
