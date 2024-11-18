@@ -135,8 +135,8 @@ function displayTask(type, task) {
 }
 
 function handleDragStart(e) {
-    // Save the dragged task's text for reference
-    e.dataTransfer.setData("text/plain", e.target.querySelector(".task-text").textContent);
+    // Use the data-task-text attribute to get the original task text
+    e.dataTransfer.setData("text/plain", e.target.dataset.taskText);
     e.target.classList.add("dragging");
 }
 
@@ -175,23 +175,19 @@ function handleDragEnd(e) {
 }
 
 function reorderTasksInLocalStorage(type) {
-    // Select the appropriate task list container
     const ul = document.getElementById({
         daily: "daily-specific-tasks-list",
         weekly: "weekly-tasks-list",
         oneTime: "one-time-tasks-list",
     }[type]);
 
-    // Retrieve the current tasks from localStorage
     let tasks = JSON.parse(localStorage.getItem(type)) || [];
 
-    // Generate the new order of tasks based on the <li> elements' text content
     const reorderedTasks = Array.from(ul.children).map(li => {
-        const textContent = li.querySelector(".task-text").textContent;
-        return tasks.find(task => task.text === textContent);
+        const taskText = li.dataset.taskText; // Match using original task text
+        return tasks.find(task => task.text === taskText);
     });
 
-    // Save the reordered tasks back to localStorage
     localStorage.setItem(type, JSON.stringify(reorderedTasks));
 }
 
