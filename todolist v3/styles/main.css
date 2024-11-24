@@ -1,3 +1,14 @@
+:root{
+    --bg-col: #1e1e1e;
+    --box-col: #2c2c2c;
+    --outl-col: #444;
+    --text-col: #ffffff;
+
+    --main-col: #b67df2;
+    --pos-col: #8bde64;
+    --neg-col: #e74c3c;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #1e1e1e;
