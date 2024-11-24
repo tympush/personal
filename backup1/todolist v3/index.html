@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To Do List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-  <meta name="author" content="Tymur Pushnoy">
-  <meta name="description" content="Personal To Do List">
+    <meta name="author" content="Tymur Pushnoy">
+    <meta name="description" content="Personal To Do List">
 
-  <link rel="icon" href="images/favicon.ico">
+    <meta property="og:title" content="Tymur Pushnoy" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="https://tympush.github.io/personal/todolist%20v3/" />
 
-  <meta property="og:title" content="Tymur Pushnoy">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="">
-  <meta property="og:url" content="https://tympush.github.io/personal/todolist%20v3/">
-
-  <link rel="stylesheet" href="styles/main.css">
-  <script src="scripts/task-manager.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/task-manager.js"></script>
 </head>
 <body>
     <h1>To-Do List</h1>
@@ -24,6 +22,7 @@
   <div id="theGrandStructure">
     <div class="container">
 
+      <!-- Combined Daily and One-Time Tasks -->
       <div class="task-box" id="daily-specefic-tasks">
         <div class="task-header">
           <h2>Daily Tasks</h2>
@@ -38,18 +37,22 @@
         </select>
         </div>
 
+        <!-- List for displaying tasks -->
         <ul id="daily-specific-tasks-list"></ul>
 
+        <!-- Buttons for Adding Daily and Specific Tasks -->
         <button onclick="addTask('daily')">Add Basic</button>
         <button onclick="addTask('daily', true)">Add Specific</button>
       </div>
 
+      <!-- Weekly Tasks -->
       <div class="task-box" id="weekly-tasks">
         <h2>Weekly Tasks</h2>
         <ul id="weekly-tasks-list"></ul>
         <button onclick="addTask('weekly')">Add Weekly</button>
       </div>
 
+      <!-- One-Time Tasks -->
       <div class="task-box" id="one-time-tasks">
         <h2>One-Time Tasks</h2>
         <ul id="one-time-tasks-list"></ul>

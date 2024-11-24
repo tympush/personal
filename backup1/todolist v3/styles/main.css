@@ -59,6 +59,7 @@ h1 {
     max-width: calc(100% - 40px);
 }
 
+
 .task-box h2 {
     font-size: 18px;
     margin: 0;
@@ -87,6 +88,7 @@ h1 {
     margin: 10;
 }
 
+/* Task list item */
 .task-box li {
     display: flex;
     align-items: center;
