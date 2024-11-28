@@ -15,9 +15,9 @@
   <meta property="og:image" content="">
   <meta property="og:url" content="https://tympush.github.io/personal/todolist%20v3/">
 
+  <link rel="stylesheet" href="styles/normalize.css">
   <link rel="stylesheet" href="styles/main.css">
-  <script src="scripts/task-manager.js"></script>
-  <script src="scripts/custumization.js"></script>
+
 </head>
 <body>
     <h1>To-Do List</h1>
@@ -27,6 +27,17 @@
     <div id="leftSidebar">
       <div id="colorButton">🖌</div>
     </div>
+
+    <dialog id="colorTab">
+      <div>
+        <h3>Theme</h3>
+        <div id="lightThemeBox" class="themeButton"></div>
+        <div id="darkThemeBox" class="themeButton"></div>
+        <div id="contrastThemeBox" class="themeButton"></div>
+      </div>
+
+      <button id="closeModal">X</button>
+    </dialog>
 
     <div class="container">
 
@@ -65,4 +76,7 @@
     </div>
   </div>
 </body>
+
+  <script src="scripts/task-manager.js"></script>
+  <script src="scripts/custumization.js"></script>
 </html>
