@@ -63,11 +63,12 @@ function highlightSelectedTheme(selectedId) {
     });
 
     // Highlight the selected theme button by adding the highlight class
-    const selectedButton = document.getElementById(`${selectedId}Box`);
+    const selectedButton = document.getElementById(`${selectedId}ThemeBox`);
     if (selectedButton) {
         selectedButton.classList.add('highlight'); // Add highlight class to the selected theme button
     }
 }
+
 
 
 
