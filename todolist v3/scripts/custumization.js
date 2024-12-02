@@ -7,15 +7,12 @@ colorButton.addEventListener('click', () => {
 const colorTab = document.querySelector("#colorTab");
 
 function displayColorTab(){
-    
     colorTab.showModal();
 
     closeModal.addEventListener("click", () => {
         colorTab.close();
     });
 }
-
-
 
 
 
@@ -49,10 +46,13 @@ Object.keys(themeButtons).forEach(theme => {
 
 // Apply the stored theme on page load
 window.addEventListener('load', function() {
-    const storedTheme = localStorage.getItem('selectedTheme');
-    if (storedTheme) {
-        applyTheme(storedTheme); // Apply stored theme
-    }
+    // Check if there is a stored theme, otherwise set it to 'dark' by default
+    const storedTheme = localStorage.getItem('selectedTheme') || 'dark';
+    applyTheme(storedTheme); // Apply stored or default theme
+
+    // Check if there is a stored color, otherwise set it to 'purple' by default
+    const storedColor = localStorage.getItem('selectedColor') || 'purple';
+    applyColor(storedColor); // Apply stored or default color
 });
 
 // Function to highlight the selected theme button
@@ -68,15 +68,6 @@ function highlightSelectedTheme(selectedId) {
         selectedButton.classList.add('highlight'); // Add highlight class to the selected theme button
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -119,14 +110,6 @@ Object.keys(colorButtons).forEach(color => {
     });
 });
 
-// Apply the stored color on page load
-window.addEventListener('load', function() {
-    const storedColor = localStorage.getItem('selectedColor');
-    if (storedColor) {
-        applyColor(storedColor); // Apply stored color
-    }
-});
-
 // Function to highlight the selected color button
 function highlightSelectedColor(selectedId) {
     // Reset all color buttons to default outline by removing the highlight class
@@ -140,5 +123,3 @@ function highlightSelectedColor(selectedId) {
         selectedButton.classList.add('highlight'); // Add highlight class to the selected color button
     }
 }
-
-
