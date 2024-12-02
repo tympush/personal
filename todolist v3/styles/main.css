@@ -13,11 +13,11 @@
 
 
 [data-theme="light"] {
-    --bg-col: #ccc;
-    --box-col: #bbb;
+    --bg-col: #bbb;
+    --box-col: #a8a8a8;
     --outl-col: #888;
-    --item-col: #9e9e9e;
-    --text-col: #000000;
+    --item-col: #989898;
+    --text-col: #222;
 }
 
 [data-theme="dark"] {
@@ -25,7 +25,7 @@
     --box-col: #2c2c2c;
     --outl-col: #444;
     --item-col: #3a3a3a;
-    --text-col: #ffffff;
+    --text-col: #fff;
 }
 
 [data-theme="contrast"] {
@@ -33,7 +33,7 @@
     --box-col: #080808;
     --outl-col: #222;
     --item-col: #101010;
-    --text-col: #ffffff;
+    --text-col: #ddd;
 }
 
 
