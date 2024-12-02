@@ -1,11 +1,4 @@
 :root{
-    --bg-col: #1e1e1e;
-    --box-col: #2c2c2c;
-    --outl-col: #444;
-    --item-col: #3a3a3a;
-    --text-col: #ffffff;
-
-    --main-hue: 270;
     --main-saturation: 80%;
     --main-lightness: 70%;
     
@@ -17,9 +10,9 @@
 
 [data-theme="light"] {
     --bg-col: #bbb;
-    --box-col: #a8a8a8;
-    --outl-col: #888;
-    --item-col: #989898;
+    --box-col: #aaa;
+    --outl-col: #999;
+    --item-col: #999;
     --text-col: #222;
 }
 
@@ -34,17 +27,51 @@
 [data-theme="contrast"] {
     --bg-col: #000;
     --box-col: #080808;
-    --outl-col: #222;
+    --outl-col: #1d1d1d;
     --item-col: #101010;
     --text-col: #ddd;
 }
 
 
 
+[data-main-col="red"] {
+    --main-hue: 0;
+}
+
+[data-main-col="orange"] {
+    --main-hue: 20;
+}
+
+[data-main-col="yellow"] {
+    --main-hue: 60;
+}
+
+[data-main-col="green"] {
+    --main-hue: 100;
+}
+
+[data-main-col="cyan"] {
+    --main-hue: 180;
+}
+
+[data-main-col="blue"] {
+    --main-hue: 215;
+}
+
+[data-main-col="deepblue"] {
+    --main-hue: 240;
+}
+
 [data-main-col="purple"] {
     --main-hue: 270;
-    --main-saturation: 80%;
-    --main-lightness: 70%;
+}
+
+[data-main-col="pink"] {
+    --main-hue: 315;
+}
+
+[data-main-col="flamingo"] {
+    --main-hue: 340;
 }
 
 
@@ -111,13 +138,23 @@ dialog button{
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.themeButton{
+
+
+
+.themeButton, .colorButton{
     width: 50px;
     height: 50px;
     border: 4px solid var(--outl-col);
     margin: 15px;
     border-radius: 5px;
 }
+
+.highlight {
+    border-color: var(--pos-col); /* Highlight outline color */
+}
+
+
+
 
 #lightThemeBox{
     background-color: #bbb;
@@ -130,6 +167,49 @@ dialog button{
 #contrastThemeBox{
     background-color: #080808;
 }
+
+
+
+#redBox{
+    background-color: white;
+}
+
+#orangeBox{
+    background-color: white;
+}
+
+#yellowBox{
+    background-color: white;
+}
+
+#greenBox{
+    background-color: white;
+}
+
+#cyanBox{
+    background-color: white;
+}
+
+#blueBox{
+    background-color: white;
+}
+
+#deepblueBox{
+    background-color: white;
+}
+
+#purpleBox{
+    background-color: white;
+}
+
+#pinkBox{
+    background-color: white;
+}
+
+#flamingoBox{
+    background-color: white;
+}
+
 
 
 
