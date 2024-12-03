@@ -134,7 +134,6 @@ const colorButtons = {
     mystical: 'mysticalBox',
 
     ukraine: 'ukraineBox',
-    belgium: 'belgiumBox',
     uk: 'ukBox',
     poland: 'polandBox'
 };

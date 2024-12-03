@@ -327,12 +327,6 @@
     --main-col-hover: linear-gradient(to bottom, #0071ea, #ffe433);
 }
 
-[data-main-col="belgium"] {
-
-    --main-col: linear-gradient(to right, #000000, #FFCD00, #C8102E);
-    --main-col-hover: linear-gradient(to right, #1a1a1a, #ffd633, #ed1e41);
-}
-
 [data-main-col="uk"] {
     --main-col: linear-gradient(45deg, #00247D, #adadad, #CF142B);
     --main-col-hover: linear-gradient(45deg, #0032b0, #c6c6c6, #eb2b42);
@@ -615,10 +609,6 @@ dialog button{
 
 #ukraineBox {
     background: linear-gradient(to bottom, #0057B7, #FFDD00);
-}
-
-#belgiumBox {
-    background: linear-gradient(to right, #000000, #FFCD00, #C8102E);
 }
 
 #ukBox {
