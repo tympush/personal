@@ -81,8 +81,8 @@
 
 [data-main-col="pink"] {
     --main-hue: 315;
-    --main-saturation: 80%;
-    --main-lightness: 70%;
+    --main-saturation: 70%;
+    --main-lightness: 65%;
 }
 
 [data-main-col="flamingo"] {
@@ -235,7 +235,7 @@ dialog button{
 }
 
 #pinkBox{
-    background-color: #e64dbf;
+    background-color: #e467c5;
 }
 
 #flamingoBox{
