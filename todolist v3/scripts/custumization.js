@@ -117,6 +117,7 @@ const colorButtons = {
     bronze: 'bronzeBox',
     silver: 'silverBox',
     gold: 'goldBox',
+    adamantite: 'adamantiteBox',
 
     flower: 'flowerBox',
     pricing: 'pricingBox',
@@ -125,7 +126,17 @@ const colorButtons = {
     breath: 'breathBox',
     earthly: 'earthlyBox',
     partly: 'partlyBox',
-    peaceful: 'peacefulBox'
+    peaceful: 'peacefulBox',
+
+    sunset: 'sunsetBox',
+    neonrain: 'neonrainBox',
+    amber: 'amberBox',
+    mystical: 'mysticalBox',
+
+    ukraine: 'ukraineBox',
+    belgium: 'belgiumBox',
+    uk: 'ukBox',
+    poland: 'polandBox'
 };
 
 Object.keys(colorButtons).forEach(color => {

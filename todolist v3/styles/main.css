@@ -234,6 +234,12 @@
     --main-col-hover: linear-gradient(45deg, #e2ac15, #ead3a2, #c9af6e, #e2ac15, #d19b11);
 }
 
+[data-main-col="adamantite"] {
+
+    --main-col: linear-gradient(45deg, #A72F2F, #CB5F5F, #B94A4A, #A72F2F, #BD1A1A);
+    --main-col-hover: linear-gradient(45deg, #c94040, #d78585, #c76f6f, #c94040, #e22929);
+}
+
 
 
 
@@ -283,6 +289,58 @@
 
     --main-col: linear-gradient(to right, #31b7c2, #7bc393);
     --main-col-hover: linear-gradient(to right, #52c9d3, #9ed3b0);
+}
+
+
+
+
+[data-main-col="sunset"] {
+
+    --main-col: linear-gradient(125deg, #f1b0bc, #e8b09a, #f6e212);
+    --main-col-hover: linear-gradient(125deg, #f9dbe1, #f1d1c4, #f8e943);
+}
+
+[data-main-col="neonrain"] {
+
+    --main-col: linear-gradient(125deg, #32faca, #7fa5cb, #cc51cd);
+    --main-col-hover: linear-gradient(125deg, #64fbd8, #a3beda, #d879d8);
+}
+
+[data-main-col="amber"] {
+
+    --main-col: linear-gradient(125deg, #ffca42, #ed872d, #552b16);
+    --main-col-hover: linear-gradient(125deg, #ffd875, #f1a25c, #7e4020);
+}
+
+[data-main-col="mystical"] {
+
+    --main-col: linear-gradient(125deg, #392c41, #684875, #9d58a1);
+    --main-col-hover: linear-gradient(125deg, #544160, #845c95, #b277b5);
+}
+
+
+
+
+[data-main-col="ukraine"] {
+
+    --main-col: linear-gradient(to bottom, #0057B7, #FFDD00);
+    --main-col-hover: linear-gradient(to bottom, #0071ea, #ffe433);
+}
+
+[data-main-col="belgium"] {
+
+    --main-col: linear-gradient(to right, #000000, #FFCD00, #C8102E);
+    --main-col-hover: linear-gradient(to right, #1a1a1a, #ffd633, #ed1e41);
+}
+
+[data-main-col="uk"] {
+    --main-col: linear-gradient(45deg, #00247D, #adadad, #CF142B);
+    --main-col-hover: linear-gradient(45deg, #0032b0, #c6c6c6, #eb2b42);
+}
+
+[data-main-col="poland"] {
+    --main-col: linear-gradient(to bottom, #adadad, #DC143C);
+    --main-col-hover: linear-gradient(to bottom, #c6c6c6, #f14d6d);
 }
 
 
@@ -494,6 +552,9 @@ dialog button{
     background: linear-gradient(45deg, #b48811, #e0bf78, #bb9b49, #b48811, #a2790d);
 }
 
+#adamantiteBox{
+    background: linear-gradient(45deg, #A72F2F, #CB5F5F, #B94A4A, #A72F2F, #BD1A1A);
+}
 
 
 
@@ -530,6 +591,43 @@ dialog button{
 }
 
 
+
+
+#sunsetBox {
+    background: linear-gradient(to right, #f1b0bc, #e8b09a, #f6e212);
+}
+
+#neonrainBox {
+    background: linear-gradient(to right, #32faca, #7fa5cb, #cc51cd);
+}
+
+#amberBox {
+    background: linear-gradient(to right, #ffca42, #ed872d, #552b16);
+}
+
+#mysticalBox {
+    background: linear-gradient(to right, #392c41, #684875, #9d58a1);
+}
+
+
+
+
+
+#ukraineBox {
+    background: linear-gradient(to bottom, #0057B7, #FFDD00);
+}
+
+#belgiumBox {
+    background: linear-gradient(to right, #000000, #FFCD00, #C8102E);
+}
+
+#ukBox {
+    background: linear-gradient(45deg, #00247D, #adadad, #CF142B);
+}
+
+#polandBox {
+    background: linear-gradient(to bottom, #adadad, #DC143C);
+}
 
 
 
