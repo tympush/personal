@@ -102,6 +102,21 @@ const colorButtons = {
     purple: 'purpleBox',
     pink: 'pinkBox',
     flamingo: 'flamingoBox',
+
+    cred: 'credBox',
+    corange: 'corangeBox',
+    cyellow: 'cyellowBox',
+    cgreen: 'cgreenBox',
+    ccyan: 'ccyanBox',
+    cblue: 'cblueBox',
+    cdeepblue: 'cdeepblueBox',
+    cpurple: 'cpurpleBox',
+    cpink: 'cpinkBox',
+    cflamingo: 'cflamingoBox',
+
+    bronze: 'bronzeBox',
+    silver: 'silverBox',
+    gold: 'goldBox',
 };
 
 Object.keys(colorButtons).forEach(color => {

@@ -34,7 +34,7 @@
 [data-main-col="red"] {
     --main-hue: 0;
     --main-saturation: 85%;
-    --main-lightness: 65%;
+    --main-lightness: 70%;
 }
 
 [data-main-col="orange"] {
@@ -70,13 +70,13 @@
 [data-main-col="deepblue"] {
     --main-hue: 245;
     --main-saturation: 80%;
-    --main-lightness: 60%;
+    --main-lightness: 70%;
 }
 
 [data-main-col="purple"] {
     --main-hue: 270;
     --main-saturation: 80%;
-    --main-lightness: 65%;
+    --main-lightness: 70%;
 }
 
 [data-main-col="pink"] {
@@ -89,6 +89,89 @@
     --main-hue: 340;
     --main-saturation: 75%;
     --main-lightness: 70%;
+}
+
+
+
+[data-main-col="cred"] {
+    --main-hue: 0;
+    --main-saturation: 85%;
+    --main-lightness: 55%;
+}
+
+[data-main-col="corange"] {
+    --main-hue: 20;
+    --main-saturation: 85%;
+    --main-lightness: 50%;
+}
+
+[data-main-col="cyellow"] {
+    --main-hue: 40;
+    --main-saturation: 80%;
+    --main-lightness: 45%;
+}
+
+[data-main-col="cgreen"] {
+    --main-hue: 80;
+    --main-saturation: 50%;
+    --main-lightness: 35%;
+}
+
+[data-main-col="ccyan"] {
+    --main-hue: 180;
+    --main-saturation: 50%;
+    --main-lightness: 35%;
+}
+
+[data-main-col="cblue"] {
+    --main-hue: 215;
+    --main-saturation: 80%;
+    --main-lightness: 50%;
+}
+
+[data-main-col="cdeepblue"] {
+    --main-hue: 245;
+    --main-saturation: 80%;
+    --main-lightness: 55%;
+}
+
+[data-main-col="cpurple"] {
+    --main-hue: 270;
+    --main-saturation: 80%;
+    --main-lightness: 55%;
+}
+
+[data-main-col="cpink"] {
+    --main-hue: 315;
+    --main-saturation: 70%;
+    --main-lightness: 50%;
+}
+
+[data-main-col="cflamingo"] {
+    --main-hue: 340;
+    --main-saturation: 75%;
+    --main-lightness: 55%;
+}
+
+
+
+
+[data-main-col="bronze"] {
+    --main-hue: 30;
+    --main-saturation: 60%;
+    --main-lightness: 50%;
+}
+
+[data-main-col="silver"] {
+    --main-hue: 0;
+    --main-saturation: 0%;
+    --main-lightness: 75%;
+}
+
+[data-main-col="gold"] {
+    --main-hue: 45;
+    --main-saturation: 65%;
+    --main-lightness: 50%;
 }
 
 
@@ -203,7 +286,7 @@ dialog button{
 
 
 #redBox{
-    background-color: #e64d4d;
+    background-color: #f07575;
 }
 
 #orangeBox{
@@ -227,11 +310,11 @@ dialog button{
 }
 
 #deepblueBox{
-    background-color: #4d4de6;
+    background-color: #8075f0;
 }
 
 #purpleBox{
-    background-color: #944de6;
+    background-color: #b375f0;
 }
 
 #pinkBox{
@@ -240,6 +323,63 @@ dialog button{
 
 #flamingoBox{
     background-color: #e66699;
+}
+
+
+
+
+#credBox{
+    background-color: #ee2b2b;
+}
+
+#corangeBox{
+    background-color: #ec5b13;
+}
+
+#cyellowBox{
+    background-color: #cf9117;
+}
+
+#cgreenBox{
+    background-color: #68862d;
+}
+
+#ccyanBox{
+    background-color: #2d8686;
+}
+
+#cblueBox{
+    background-color: #1a6fe6;
+}
+
+#cdeepblueBox{
+    background-color: #4030e8;
+}
+
+#cpurpleBox{
+    background-color: #8c30e8;
+}
+
+#cpinkBox{
+    background-color: #d926ac;
+}
+
+#cflamingoBox{
+    background-color: #e23670;
+}
+
+
+
+#bronzeBox{
+    background-color: #cc8033;
+}
+
+#silverBox{
+    background-color: #bfbfbf;
+}
+
+#goldBox{
+    background-color: #d2a92d;
 }
 
 
