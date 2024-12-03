@@ -236,6 +236,58 @@
 
 
 
+
+[data-main-col="flower"] {
+
+    --main-col: linear-gradient(to right, #FFD3A5, #FD6585);
+    --main-col-hover: linear-gradient(to right, #ffecd8, #fe97ad);
+}
+
+[data-main-col="pricing"] {
+
+    --main-col: linear-gradient(to right, #144a5f, #34e89e);
+    --main-col-hover: linear-gradient(to right, #1d6a89, #62edb3);
+}
+
+[data-main-col="playful"] {
+
+    --main-col: linear-gradient(to right, #12c2e9, #f64f59);
+    --main-col-hover: linear-gradient(to right, #3ecff0, #f87f87);
+}
+
+[data-main-col="beachy"] {
+
+    --main-col: linear-gradient(to right, #fccf31, #f55555);
+    --main-col-hover: linear-gradient(to right, #fddb63, #f88585);
+}
+
+[data-main-col="breath"] {
+
+    --main-col: linear-gradient(to right, #7f7fd5, #91eae4);
+    --main-col-hover: linear-gradient(to right, #a6a6e2, #bcf2ef);
+}
+
+[data-main-col="earthly"] {
+
+    --main-col: linear-gradient(to right, #3e5151, #decba4);
+    --main-col-hover: linear-gradient(to right, #546e6e, #ece0c9);
+}
+
+[data-main-col="partly"] {
+
+    --main-col: linear-gradient(to right, #333399, #ff00cc);
+    --main-col-hover: linear-gradient(to right, #4040bf, #ff33d6);
+}
+
+[data-main-col="peaceful"] {
+
+    --main-col: linear-gradient(to right, #31b7c2, #7bc393);
+    --main-col-hover: linear-gradient(to right, #52c9d3, #9ed3b0);
+}
+
+
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: var(--bg-col);
@@ -441,6 +493,42 @@ dialog button{
 #goldBox{
     background: linear-gradient(45deg, #b48811, #e0bf78, #bb9b49, #b48811, #a2790d);
 }
+
+
+
+
+#flowerBox {
+    background: linear-gradient(to right, #FFD3A5, #FD6585);
+}
+
+#pricingBox {
+    background: linear-gradient(to right, #144a5f, #34e89e);
+}
+
+#playfulBox {
+    background: linear-gradient(to right, #12c2e9, #f64f59);
+}
+
+#beachyBox {
+    background: linear-gradient(to right, #fccf31, #f55555);
+}
+
+#breathBox {
+    background: linear-gradient(to right, #7f7fd5, #91eae4);
+}
+
+#earthlyBox {
+    background: linear-gradient(to right, #3e5151, #decba4);
+}
+
+#partlyBox {
+    background: linear-gradient(to right, #333399, #ff00cc);
+}
+
+#peacefulBox {
+    background: linear-gradient(to right, #31b7c2, #7bc393);
+}
+
 
 
 
