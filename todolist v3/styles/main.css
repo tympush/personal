@@ -1,7 +1,4 @@
 :root{
-    --main-saturation: 80%;
-    --main-lightness: 70%;
-    
     --pos-col: #8bde64;
     --neg-col: #e74c3c;
 }
@@ -36,42 +33,62 @@
 
 [data-main-col="red"] {
     --main-hue: 0;
+    --main-saturation: 85%;
+    --main-lightness: 65%;
 }
 
 [data-main-col="orange"] {
     --main-hue: 20;
+    --main-saturation: 85%;
+    --main-lightness: 65%;
 }
 
 [data-main-col="yellow"] {
-    --main-hue: 60;
+    --main-hue: 40;
+    --main-saturation: 80%;
+    --main-lightness: 60%;
 }
 
 [data-main-col="green"] {
-    --main-hue: 100;
+    --main-hue: 80;
+    --main-saturation: 50%;
+    --main-lightness: 50%;
 }
 
 [data-main-col="cyan"] {
     --main-hue: 180;
+    --main-saturation: 50%;
+    --main-lightness: 50%;
 }
 
 [data-main-col="blue"] {
     --main-hue: 215;
+    --main-saturation: 80%;
+    --main-lightness: 65%;
 }
 
 [data-main-col="deepblue"] {
-    --main-hue: 240;
+    --main-hue: 245;
+    --main-saturation: 80%;
+    --main-lightness: 60%;
 }
 
 [data-main-col="purple"] {
     --main-hue: 270;
+    --main-saturation: 80%;
+    --main-lightness: 65%;
 }
 
 [data-main-col="pink"] {
     --main-hue: 315;
+    --main-saturation: 80%;
+    --main-lightness: 70%;
 }
 
 [data-main-col="flamingo"] {
     --main-hue: 340;
+    --main-saturation: 75%;
+    --main-lightness: 70%;
 }
 
 
@@ -138,6 +155,22 @@ dialog button{
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+#dialogGrid{
+    display: grid;
+    grid-template-columns: 1fr 4fr 2fr 2fr;
+    text-align: center;
+    gap: 50px;
+}
+
+.optionsBox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+    height: auto;
+}
+
 
 
 
@@ -145,19 +178,18 @@ dialog button{
     width: 50px;
     height: 50px;
     border: 4px solid var(--outl-col);
-    margin: 15px;
     border-radius: 5px;
 }
 
 .highlight {
-    border-color: var(--pos-col); /* Highlight outline color */
+    border-color: var(--pos-col);
 }
 
 
 
 
 #lightThemeBox{
-    background-color: #bbb;
+    background-color: #aaa;
 }
 
 #darkThemeBox{
@@ -171,43 +203,43 @@ dialog button{
 
 
 #redBox{
-    background-color: white;
+    background-color: #e64d4d;
 }
 
 #orangeBox{
-    background-color: white;
+    background-color: #e6804d;
 }
 
 #yellowBox{
-    background-color: white;
+    background-color: #d9b34d;
 }
 
 #greenBox{
-    background-color: white;
+    background-color: #66b366;
 }
 
 #cyanBox{
-    background-color: white;
+    background-color: #40bfbf;
 }
 
 #blueBox{
-    background-color: white;
+    background-color: #4d94e6;
 }
 
 #deepblueBox{
-    background-color: white;
+    background-color: #4d4de6;
 }
 
 #purpleBox{
-    background-color: white;
+    background-color: #944de6;
 }
 
 #pinkBox{
-    background-color: white;
+    background-color: #e64dbf;
 }
 
 #flamingoBox{
-    background-color: white;
+    background-color: #e66699;
 }
 
 
